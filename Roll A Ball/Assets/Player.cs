@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
+    private Rigidbody mRB;
     private void Awake()
     {
         Debug.Log("Awake");
@@ -16,12 +17,19 @@ public class Player : MonoBehaviour
     void Start()
     {
         Debug.Log("Start");
+        mRB = GetComponent<Rigidbody>();
+        //gameObject.SetActive(false);
 
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+        mRB.AddForce(1, 0, 0);
+        //Debug.Log("aaa");
+        //Debug.LogFormat("{0}, {1}", 21, 2);
+        //Debug.LogWarning("bbb");
+        //Debug.LogWarningFormat("{0}bbb", 45);
+        //Debug.LogError("ssss");
     }
 }
