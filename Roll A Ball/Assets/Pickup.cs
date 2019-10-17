@@ -16,8 +16,6 @@ public class Pickup : MonoBehaviour
     void Update()
     {
         transform.Rotate(mRotateSpeed * Time.deltaTime);
-        Debug.Log(Time.deltaTime);
-        Debug.Log(Time.fixedDeltaTime);
     }
     private void OnCollisionEnter(Collision collision)
     {
@@ -30,6 +28,9 @@ public class Pickup : MonoBehaviour
         if (other.gameObject.CompareTag("Player"))
         {
             gameObject.SetActive(false);
+            GameObject controllerObj = GameObject.FindGameObjectWithTag("GameController");
+            GameController controller = controllerObj.GetComponent<GameController>();
+            controller.AddScore(1);
         }
     }
 
