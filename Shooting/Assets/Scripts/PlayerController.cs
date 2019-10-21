@@ -12,10 +12,19 @@ public class PlayerController : MonoBehaviour
 
     private Rigidbody mRB;
 
+    [SerializeField]
+    private float mFireRate;
+    private float mCurrentFireRate;
+    [SerializeField]
+    private Bolt mBoltPrefab;
+    [SerializeField]
+    private Transform mBoltPos;
+
     // Start is called before the first frame update
     void Start()
     {
         mRB = GetComponent<Rigidbody>();
+        mCurrentFireRate = 0;
     }
 
     // Update is called once per frame
@@ -31,5 +40,12 @@ public class PlayerController : MonoBehaviour
                                          Mathf.Clamp(transform.position.z, mZMin, mZMax));
         transform.rotation = Quaternion.Euler(0, 0, mTilt * -horizontal);
 
+        if (0 >= mCurrentFireRate && Input.GetButton("Fire1"))
+        {
+            Bolt newBolt = Instantiate(mBoltPrefab);
+            newBolt.transform.position = mBoltPos.position;
+            mCurrentFireRate = mFireRate;
+        }
+        mCurrentFireRate -= Time.deltaTime;
     }
 }
