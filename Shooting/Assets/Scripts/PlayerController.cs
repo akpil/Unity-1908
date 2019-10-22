@@ -16,7 +16,7 @@ public class PlayerController : MonoBehaviour
     private float mFireRate;
     private float mCurrentFireRate;
     [SerializeField]
-    private Bolt mBoltPrefab;
+    private BoltPool mPool;
     [SerializeField]
     private Transform mBoltPos;
 
@@ -42,7 +42,7 @@ public class PlayerController : MonoBehaviour
 
         if (0 >= mCurrentFireRate && Input.GetButton("Fire1"))
         {
-            Bolt newBolt = Instantiate(mBoltPrefab);
+            Bolt newBolt = mPool.GetFromPool();
             newBolt.transform.position = mBoltPos.position;
             mCurrentFireRate = mFireRate;
         }
