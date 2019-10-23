@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BoltPool : OBJPool<Bolt>
+public class AsteroidPool : OBJPool<Asteroid>
 {
+    
 }
