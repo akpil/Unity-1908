@@ -24,6 +24,11 @@ public class Enemy : MonoBehaviour
         StartCoroutine(AutoFire());
     }
 
+    public void SetBoltPool(BoltPool pool)
+    {
+        mBoltPool = pool;
+    }
+
     private IEnumerator AutoFire()
     {
         while (true)
@@ -62,6 +67,19 @@ public class Enemy : MonoBehaviour
             //mRB.velocity -= new Vector3(mRB.velocity.x, 0, 0);
             //// (0, 0, mSpeed)
             //mRB.velocity = new Vector3(0, 0, mRB.velocity.z);
+        }
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.gameObject.CompareTag("Player") ||
+            other.gameObject.CompareTag("Bolt"))
+        {
+            //터지는 이펙트
+            //터지는 소리
+            //점수
+            gameObject.SetActive(false);
+            other.gameObject.SetActive(false);
         }
     }
 }

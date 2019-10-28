@@ -5,8 +5,8 @@ using UnityEngine;
 public class OBJPool<T> : MonoBehaviour where T : Component
 {
     [SerializeField]
-    private T[] mOrigin;
-    private List<T>[] mPool;
+    protected T[] mOrigin;
+    protected List<T>[] mPool;
     // Start is called before the first frame update
     void Start()
     {
@@ -27,6 +27,10 @@ public class OBJPool<T> : MonoBehaviour where T : Component
             }
         }
 
+        return MakeNewInstance(id);
+    }
+    protected virtual T MakeNewInstance(int id)
+    {
         T newObj = Instantiate(mOrigin[id]);
         mPool[id].Add(newObj);
         return newObj;

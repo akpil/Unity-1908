@@ -48,4 +48,13 @@ public class PlayerController : MonoBehaviour
         }
         mCurrentFireRate -= Time.deltaTime;
     }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.gameObject.CompareTag("Enemy"))
+        {
+            other.gameObject.SetActive(false);
+            gameObject.SetActive(false);
+        }
+    }
 }
