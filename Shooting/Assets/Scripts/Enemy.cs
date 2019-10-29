@@ -12,6 +12,8 @@ public class Enemy : MonoBehaviour
     private BoltPool mBoltPool;
     [SerializeField]
     private Transform mBoltPos;
+
+    private EffectPool mEffectpool;
     private void Awake()
     {
         mRB = GetComponent<Rigidbody>();        
@@ -31,9 +33,10 @@ public class Enemy : MonoBehaviour
 
     private IEnumerator AutoFire()
     {
+        WaitForSeconds fireRate = new WaitForSeconds(.6f);
         while (true)
         {
-            yield return new WaitForSeconds(.6f);
+            yield return fireRate;
             Bolt newBolt = mBoltPool.GetFromPool();
             newBolt.transform.position = mBoltPos.position;
             newBolt.transform.rotation = mBoltPos.rotation;
@@ -45,7 +48,6 @@ public class Enemy : MonoBehaviour
     {
         while (true)
         {
-
             // vel = (0,0,mSpeed)
             yield return new WaitForSeconds(Random.Range(.5f, 1.5f));
             if (transform.position.x < 0)
@@ -75,7 +77,13 @@ public class Enemy : MonoBehaviour
         if (other.gameObject.CompareTag("Player") ||
             other.gameObject.CompareTag("Bolt"))
         {
-            //터지는 이펙트
+            if (mEffectpool == null)
+            {
+                mEffectpool = GameObject.FindGameObjectWithTag("EffectPool").
+                                        GetComponent<EffectPool>();
+            }
+            Timer effect = mEffectpool.GetFromPool((int)eEffecttype.Enmey);
+            effect.transform.position = transform.position;
             //터지는 소리
             //점수
             gameObject.SetActive(false);

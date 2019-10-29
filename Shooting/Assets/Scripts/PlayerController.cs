@@ -20,6 +20,8 @@ public class PlayerController : MonoBehaviour
     [SerializeField]
     private Transform mBoltPos;
 
+    private EffectPool mEffectpool;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -53,6 +55,14 @@ public class PlayerController : MonoBehaviour
     {
         if (other.gameObject.CompareTag("Enemy"))
         {
+            if (mEffectpool == null)
+            {
+                mEffectpool = GameObject.FindGameObjectWithTag("EffectPool").
+                                        GetComponent<EffectPool>();
+            }
+            Timer effect = mEffectpool.GetFromPool((int)eEffecttype.Player);
+            effect.transform.position = transform.position;
+
             other.gameObject.SetActive(false);
             gameObject.SetActive(false);
         }

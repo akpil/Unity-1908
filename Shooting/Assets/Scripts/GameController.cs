@@ -12,10 +12,12 @@ public class GameController : MonoBehaviour
     private float mPeriod;
     [SerializeField]
     private int mASTSpawnCount, mEnemySpawnCount;
+    private int mRoundCount;
     private float mCountdown;
     // Start is called before the first frame update
     void Start()
     {
+        mRoundCount = 0;
         mCountdown = mPeriod;
         StartCoroutine(SpawnHazard());
         //StartCoroutine("SpawnHazard", 10);
@@ -23,13 +25,15 @@ public class GameController : MonoBehaviour
 
     private IEnumerator SpawnHazard()
     {
+        WaitForSeconds pointFive = new WaitForSeconds(.5f);
+        WaitForSeconds period = new WaitForSeconds(mPeriod);
         int currentAST, currentEnemy;
         float AstRate;
         while (true)
         {
-            yield return new WaitForSeconds(mPeriod);
-            currentAST = mASTSpawnCount;
-            currentEnemy = mEnemySpawnCount;
+            yield return period;
+            currentAST = mASTSpawnCount + mRoundCount * (mRoundCount + 1) / 2;
+            currentEnemy = mEnemySpawnCount + mRoundCount/2;
             AstRate = (float)currentAST / (currentAST + currentEnemy);
             Debug.Log("ASTRate : " + AstRate);
 
@@ -51,20 +55,21 @@ public class GameController : MonoBehaviour
                     enemy.transform.position = new Vector3(Random.Range(-5.5f, 5.5f), 0, 16);
                     currentEnemy--;
                 }
-                yield return new WaitForSeconds(.5f);
+                yield return pointFive;
             }
             for (int i = 0; i < currentAST; i++)
             {
                 Asteroid ast = mAstPool.GetFromPool(Random.Range(0, 3));
                 ast.transform.position = new Vector3(Random.Range(-5.5f, 5.5f), 0, 16);
-                yield return new WaitForSeconds(.5f);
+                yield return pointFive;
             }
             for (int i = 0; i < currentEnemy; i++)
             {
                 Enemy enemy = mEnemyPool.GetFromPool();
                 enemy.transform.position = new Vector3(Random.Range(-5.5f, 5.5f), 0, 16);
-                yield return new WaitForSeconds(.5f);
+                yield return pointFive;
             }
+            mRoundCount++;
         }
     }
 

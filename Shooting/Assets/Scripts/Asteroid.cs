@@ -8,6 +8,8 @@ public class Asteroid : MonoBehaviour
     [SerializeField]
     private float mSpeed, mTorque;
 
+    private EffectPool mEffectpool;
+
     private void Awake()
     {
         mRB = GetComponent<Rigidbody>();
@@ -31,7 +33,13 @@ public class Asteroid : MonoBehaviour
         if (other.gameObject.CompareTag("Player") ||
             other.gameObject.CompareTag("Bolt"))
         {
-            //터지는 이펙트
+            if (mEffectpool == null)
+            {
+                mEffectpool = GameObject.FindGameObjectWithTag("EffectPool").
+                                        GetComponent<EffectPool>();
+            }
+            Timer effect = mEffectpool.GetFromPool((int)eEffecttype.Asteroid);
+            effect.transform.position = transform.position;
             //터지는 소리
             //점수
             gameObject.SetActive(false);
