@@ -14,9 +14,18 @@ public class Enemy : MonoBehaviour
     private Transform mBoltPos;
 
     private EffectPool mEffectpool;
+
+    private SoundController mSoundController;
+
+    private GameController mGameController;
+
     private void Awake()
     {
-        mRB = GetComponent<Rigidbody>();        
+        mRB = GetComponent<Rigidbody>();
+        mSoundController = GameObject.FindGameObjectWithTag("SoundController").
+                                        GetComponent<SoundController>();
+        mGameController = GameObject.FindGameObjectWithTag("GameController").
+                                        GetComponent<GameController>();
     }
 
     private void OnEnable()
@@ -24,11 +33,20 @@ public class Enemy : MonoBehaviour
         mRB.velocity = Vector3.back * mSpeed;
         StartCoroutine(MovePattern());
         StartCoroutine(AutoFire());
+        //InvokeRepeating("AutoFireInvoke", 0.6f, 0.6f); //쓰지마
     }
 
     public void SetBoltPool(BoltPool pool)
     {
         mBoltPool = pool;
+    }
+
+    private void AutoFireInvoke()
+    {
+        Bolt newBolt = mBoltPool.GetFromPool();
+        newBolt.transform.position = mBoltPos.position;
+        newBolt.transform.rotation = mBoltPos.rotation;
+        mSoundController.PlayEffectSound((int)eSoundType.FireEnem);
     }
 
     private IEnumerator AutoFire()
@@ -40,7 +58,7 @@ public class Enemy : MonoBehaviour
             Bolt newBolt = mBoltPool.GetFromPool();
             newBolt.transform.position = mBoltPos.position;
             newBolt.transform.rotation = mBoltPos.rotation;
-
+            mSoundController.PlayEffectSound((int)eSoundType.FireEnem);
         }
     }
 
@@ -84,8 +102,11 @@ public class Enemy : MonoBehaviour
             }
             Timer effect = mEffectpool.GetFromPool((int)eEffecttype.Enmey);
             effect.transform.position = transform.position;
-            //터지는 소리
-            //점수
+
+            mSoundController.PlayEffectSound((int)eSoundType.ExpEnem);
+
+            mGameController.AddScore(10);
+
             gameObject.SetActive(false);
             other.gameObject.SetActive(false);
         }

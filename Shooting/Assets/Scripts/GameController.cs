@@ -5,6 +5,11 @@ using UnityEngine;
 public class GameController : MonoBehaviour
 {
     [SerializeField]
+    private float mScore;
+    [SerializeField]
+    private UIController mUIControl;
+    [Header("Hazard")]
+    [SerializeField]
     private AsteroidPool mAstPool;
     [SerializeField]
     private EnemyPool mEnemyPool;
@@ -17,10 +22,18 @@ public class GameController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        mScore = 0;
+        mUIControl.ShowScore(mScore);
         mRoundCount = 0;
         mCountdown = mPeriod;
         StartCoroutine(SpawnHazard());
         //StartCoroutine("SpawnHazard", 10);
+    }
+
+    public void AddScore(float amount)
+    {
+        mScore += amount;
+        mUIControl.ShowScore(mScore);
     }
 
     private IEnumerator SpawnHazard()
@@ -35,22 +48,19 @@ public class GameController : MonoBehaviour
             currentAST = mASTSpawnCount + mRoundCount * (mRoundCount + 1) / 2;
             currentEnemy = mEnemySpawnCount + mRoundCount/2;
             AstRate = (float)currentAST / (currentAST + currentEnemy);
-            Debug.Log("ASTRate : " + AstRate);
 
             while (currentAST > 0 && currentEnemy > 0)
             {
                 float rate = Random.Range(0, 1f);
-                Debug.Log("rate : " + rate);
+
                 if (rate < AstRate) //운석 생성
                 {
-                    Debug.Log("AST");
                     Asteroid ast = mAstPool.GetFromPool(Random.Range(0, 3));
                     ast.transform.position = new Vector3(Random.Range(-5.5f, 5.5f), 0, 16);
                     currentAST--;
                 }
                 else // 적생성
                 {
-                    Debug.Log("Enemy");
                     Enemy enemy = mEnemyPool.GetFromPool();
                     enemy.transform.position = new Vector3(Random.Range(-5.5f, 5.5f), 0, 16);
                     currentEnemy--;
@@ -71,10 +81,5 @@ public class GameController : MonoBehaviour
             }
             mRoundCount++;
         }
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
     }
 }

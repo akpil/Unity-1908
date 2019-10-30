@@ -22,11 +22,15 @@ public class PlayerController : MonoBehaviour
 
     private EffectPool mEffectpool;
 
+    private SoundController mSoundController;
+
     // Start is called before the first frame update
     void Start()
     {
         mRB = GetComponent<Rigidbody>();
         mCurrentFireRate = 0;
+        mSoundController = GameObject.FindGameObjectWithTag("SoundController").
+                                      GetComponent<SoundController>();
     }
 
     // Update is called once per frame
@@ -47,6 +51,7 @@ public class PlayerController : MonoBehaviour
             Bolt newBolt = mPool.GetFromPool();
             newBolt.transform.position = mBoltPos.position;
             mCurrentFireRate = mFireRate;
+            mSoundController.PlayEffectSound((int)eSoundType.FirePlayer);
         }
         mCurrentFireRate -= Time.deltaTime;
     }
@@ -62,6 +67,8 @@ public class PlayerController : MonoBehaviour
             }
             Timer effect = mEffectpool.GetFromPool((int)eEffecttype.Player);
             effect.transform.position = transform.position;
+
+            mSoundController.PlayEffectSound((int)eSoundType.ExpPlayer);
 
             other.gameObject.SetActive(false);
             gameObject.SetActive(false);

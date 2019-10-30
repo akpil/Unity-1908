@@ -10,10 +10,16 @@ public class Asteroid : MonoBehaviour
 
     private EffectPool mEffectpool;
 
+    private SoundController mSoundController;
+
+    private GameController mGameController;
+
     private void Awake()
     {
         mRB = GetComponent<Rigidbody>();
         mRB.velocity = Vector3.back * mSpeed;
+        mGameController = GameObject.FindGameObjectWithTag("GameController").
+                                     GetComponent<GameController>();
     }
 
     private void OnEnable()
@@ -40,8 +46,16 @@ public class Asteroid : MonoBehaviour
             }
             Timer effect = mEffectpool.GetFromPool((int)eEffecttype.Asteroid);
             effect.transform.position = transform.position;
-            //터지는 소리
-            //점수
+
+            if (mSoundController == null)
+            {
+                mSoundController = GameObject.FindGameObjectWithTag("SoundController").
+                                        GetComponent<SoundController>();
+            }
+            mSoundController.PlayEffectSound((int)eSoundType.ExpAst);
+
+            mGameController.AddScore(1);
+
             gameObject.SetActive(false);
             other.gameObject.SetActive(false);
         }
