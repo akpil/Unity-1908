@@ -8,6 +8,9 @@ public class GameController : MonoBehaviour
     private float mScore;
     [SerializeField]
     private UIController mUIControl;
+    [SerializeField]
+    private PlayerController mPlayer;
+    private bool mbRestart;
     [Header("Hazard")]
     [SerializeField]
     private AsteroidPool mAstPool;
@@ -17,16 +20,18 @@ public class GameController : MonoBehaviour
     private float mPeriod;
     [SerializeField]
     private int mASTSpawnCount, mEnemySpawnCount;
+    private Coroutine mHazardRoutine;
     private int mRoundCount;
     private float mCountdown;
     // Start is called before the first frame update
     void Start()
     {
+        mbRestart = false;
         mScore = 0;
         mUIControl.ShowScore(mScore);
         mRoundCount = 0;
         mCountdown = mPeriod;
-        StartCoroutine(SpawnHazard());
+        mHazardRoutine = StartCoroutine(SpawnHazard());
         //StartCoroutine("SpawnHazard", 10);
     }
 
@@ -34,6 +39,37 @@ public class GameController : MonoBehaviour
     {
         mScore += amount;
         mUIControl.ShowScore(mScore);
+    }
+
+    public void GameOver()
+    {
+        mbRestart = true;
+        mUIControl.ShowState("Game Over!");
+        mUIControl.ShowRestartText(true);
+        StopCoroutine(mHazardRoutine);
+    }
+
+    private void Restart()
+    {
+        mPlayer.gameObject.SetActive(true);
+        mPlayer.transform.position = Vector3.zero;
+
+        mScore = 0;
+        mUIControl.ShowScore(mScore);
+
+        mHazardRoutine = StartCoroutine(SpawnHazard());
+
+        mUIControl.ShowRestartText(false);
+        mUIControl.ShowState("");
+        mbRestart = false;
+    }
+
+    private void Update()
+    {
+        if (mbRestart && Input.GetKeyDown(KeyCode.R))
+        {
+            Restart();
+        }
     }
 
     private IEnumerator SpawnHazard()

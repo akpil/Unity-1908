@@ -24,6 +24,8 @@ public class PlayerController : MonoBehaviour
 
     private SoundController mSoundController;
 
+    private GameController mGameControl;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -31,6 +33,8 @@ public class PlayerController : MonoBehaviour
         mCurrentFireRate = 0;
         mSoundController = GameObject.FindGameObjectWithTag("SoundController").
                                       GetComponent<SoundController>();
+        mGameControl = GameObject.FindGameObjectWithTag("GameController").
+                                  GetComponent<GameController>();
     }
 
     // Update is called once per frame
@@ -69,6 +73,8 @@ public class PlayerController : MonoBehaviour
             effect.transform.position = transform.position;
 
             mSoundController.PlayEffectSound((int)eSoundType.ExpPlayer);
+
+            mGameControl.GameOver();
 
             other.gameObject.SetActive(false);
             gameObject.SetActive(false);
