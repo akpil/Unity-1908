@@ -52,12 +52,17 @@ public class PlayerController : MonoBehaviour
 
         if (0 >= mCurrentFireRate && Input.GetButton("Fire1"))
         {
-            Bolt newBolt = mPool.GetFromPool();
-            newBolt.transform.position = mBoltPos.position;
+            Fire();
             mCurrentFireRate = mFireRate;
-            mSoundController.PlayEffectSound((int)eSoundType.FirePlayer);
         }
         mCurrentFireRate -= Time.deltaTime;
+    }
+
+    private void Fire()
+    {
+        Bolt newBolt = mPool.GetFromPool();
+        newBolt.transform.position = mBoltPos.position;
+        mSoundController.PlayEffectSound((int)eSoundType.FirePlayer);
     }
 
     private void OnTriggerEnter(Collider other)

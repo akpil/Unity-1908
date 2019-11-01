@@ -8,15 +8,19 @@ public class Bolt : MonoBehaviour
     [SerializeField]
     private float mSpeed;
     // Start is called before the first frame update
-    void Start()
+    void Awake()
     {
         mRB = GetComponent<Rigidbody>();
+    }
+
+    private void OnEnable()
+    {
         mRB.velocity = transform.forward * mSpeed;
     }
 
-    // Update is called once per frame
-    void Update()
+    public void SetTarget(Vector3 TargetPoint)
     {
-        
+        Vector3 dir = TargetPoint - transform.position;
+        mRB.velocity = dir.normalized * mSpeed;
     }
 }

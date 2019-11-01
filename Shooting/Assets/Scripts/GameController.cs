@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GameController : MonoBehaviour
 {
@@ -51,17 +52,18 @@ public class GameController : MonoBehaviour
 
     private void Restart()
     {
-        mPlayer.gameObject.SetActive(true);
-        mPlayer.transform.position = Vector3.zero;
+        SceneManager.LoadScene(0);
+        //mPlayer.gameObject.SetActive(true);
+        //mPlayer.transform.position = Vector3.zero;
 
-        mScore = 0;
-        mUIControl.ShowScore(mScore);
+        //mScore = 0;
+        //mUIControl.ShowScore(mScore);
 
-        mHazardRoutine = StartCoroutine(SpawnHazard());
+        //mHazardRoutine = StartCoroutine(SpawnHazard());
 
-        mUIControl.ShowRestartText(false);
-        mUIControl.ShowState("");
-        mbRestart = false;
+        //mUIControl.ShowRestartText(false);
+        //mUIControl.ShowState("");
+        //mbRestart = false;
     }
 
     private void Update()
