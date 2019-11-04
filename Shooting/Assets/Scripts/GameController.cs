@@ -12,6 +12,9 @@ public class GameController : MonoBehaviour
     [SerializeField]
     private PlayerController mPlayer;
     private bool mbRestart;
+    [SerializeField]
+    private ItemPool mItemPool;
+
     [Header("Hazard")]
     [SerializeField]
     private AsteroidPool mAstPool;
@@ -118,6 +121,8 @@ public class GameController : MonoBehaviour
                 yield return pointFive;
             }
             mRoundCount++;
+            Item item = mItemPool.GetFromPool(Random.Range(0, 2));
+            item.transform.position = new Vector3(Random.Range(-5.5f, 5.5f), 0, 16);
         }
     }
 }

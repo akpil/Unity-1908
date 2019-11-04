@@ -19,6 +19,16 @@ public class PlayerController : MonoBehaviour
     private BoltPool mPool;
     [SerializeField]
     private Transform mBoltPos;
+    [SerializeField]
+    private float mBoltGap;
+    [SerializeField]
+    private int mBoltCount = 1;
+    [SerializeField]
+    private bool mSupporterFlag;
+    [SerializeField]
+    private GameObject[] mSupporterArr;
+    [SerializeField]
+    private Transform[] mSupporterBoltPosArr;
 
     private EffectPool mEffectpool;
 
@@ -58,10 +68,47 @@ public class PlayerController : MonoBehaviour
         mCurrentFireRate -= Time.deltaTime;
     }
 
+    public void GetItem(eItemType type)
+    {
+        switch (type)
+        {
+            case eItemType.Bolt:
+                mBoltCount++;
+                break;
+            case eItemType.Supporter:
+                mSupporterFlag = true;
+                for (int i = 0; i < mSupporterArr.Length; i++)
+                {
+                    mSupporterArr[i].SetActive(true);
+                }
+                break;
+            default:
+                Debug.LogError("Wrong item type " + type);
+                break;
+        }
+    }
+
     private void Fire()
     {
-        Bolt newBolt = mPool.GetFromPool();
-        newBolt.transform.position = mBoltPos.position;
+        float startX = (1 - mBoltCount) / 2f * mBoltGap;
+        Vector3 pos = mBoltPos.position;
+        pos.x += startX;
+        for (int i = 0; i < mBoltCount; i++)
+        {
+            Bolt newBolt = mPool.GetFromPool();
+            newBolt.transform.position = pos;
+            pos.x += mBoltGap;
+        }
+
+        if (mSupporterFlag)
+        {
+            for (int i = 0; i < mSupporterBoltPosArr.Length; i++)
+            {
+                Bolt newBolt = mPool.GetFromPool();
+                newBolt.transform.position = mSupporterBoltPosArr[i].position;
+            }
+        }
+
         mSoundController.PlayEffectSound((int)eSoundType.FirePlayer);
     }
 
