@@ -35,7 +35,7 @@ public class GameController : MonoBehaviour
         mUIControl.ShowScore(mScore);
         mRoundCount = 0;
         mCountdown = mPeriod;
-        mHazardRoutine = StartCoroutine(SpawnHazard());
+        //mHazardRoutine = StartCoroutine(SpawnHazard());
         //StartCoroutine("SpawnHazard", 10);
     }
 
