@@ -30,6 +30,11 @@ public class PlayerController : MonoBehaviour
     [SerializeField]
     private Transform[] mSupporterBoltPosArr;
 
+    [SerializeField]
+    private BombPool mBombPool;
+    [SerializeField]
+    private int mBombCount;
+
     private EffectPool mEffectpool;
 
     private SoundController mSoundController;
@@ -66,6 +71,13 @@ public class PlayerController : MonoBehaviour
             mCurrentFireRate = mFireRate;
         }
         mCurrentFireRate -= Time.deltaTime;
+
+        if (mBombCount > 0 && Input.GetKeyDown(KeyCode.Space))
+        {
+            Bomb bomb = mBombPool.GetFromPool();
+            bomb.transform.position = mBoltPos.position;
+            mBombCount--;
+        }
     }
 
     public void GetItem(eItemType type)

@@ -16,12 +16,26 @@ public class Boss : MonoBehaviour
     private float mCurrentHP;
     [SerializeField]
     private GaugeBar mHPBar;
+    [SerializeField]
+    private ItemPool mItemPool;
+    private SoundController mSoundController;
+    private EffectPool mEffectPool;
+
 
     private bool mbInvinsible;
+
+    public bool IsAlive
+    {
+        get { return mCurrentHP > 0; }
+    }
 
     void Awake()
     {
         mRB = GetComponent<Rigidbody>();
+        mSoundController = GameObject.FindGameObjectWithTag("SoundController").
+                            GetComponent<SoundController>();
+        mEffectPool = GameObject.FindGameObjectWithTag("EffectPool").
+                                GetComponent<EffectPool>();
     }
 
     private void OnEnable()
@@ -41,6 +55,7 @@ public class Boss : MonoBehaviour
             yield return oneSec;
             Bolt bolt = mBoltPool.GetFromPool(1);
             bolt.transform.position = mBoltPos.position;
+            mSoundController.PlayEffectSound((int)eSoundType.FireEnem);
         }
     }
 
@@ -86,6 +101,19 @@ public class Boss : MonoBehaviour
 
             if (mCurrentHP <= 0)
             {
+                mSoundController.PlayEffectSound((int)eSoundType.ExpPlayer);
+                Timer effect = mEffectPool.GetFromPool((int)eEffecttype.Player);
+                effect.transform.position = transform.position;
+
+                //
+                Item item = mItemPool.GetFromPool(Random.Range(0, 2));
+                float xPos = Random.Range(-2.0f, 2f);
+                item.transform.position = transform.position + Vector3.right * xPos;
+
+                item = mItemPool.GetFromPool(Random.Range(0, 2));
+                xPos = Random.Range(-2.0f, 2f);
+                item.transform.position = transform.position + Vector3.right * xPos;
+
                 gameObject.SetActive(false);
                 mHPBar.gameObject.SetActive(false);
             }

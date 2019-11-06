@@ -21,6 +21,8 @@ public class GameController : MonoBehaviour
     [SerializeField]
     private EnemyPool mEnemyPool;
     [SerializeField]
+    private Boss mBoss;
+    [SerializeField]
     private float mPeriod;
     [SerializeField]
     private int mASTSpawnCount, mEnemySpawnCount;
@@ -35,7 +37,7 @@ public class GameController : MonoBehaviour
         mUIControl.ShowScore(mScore);
         mRoundCount = 0;
         mCountdown = mPeriod;
-        //mHazardRoutine = StartCoroutine(SpawnHazard());
+        mHazardRoutine = StartCoroutine(SpawnHazard());
         //StartCoroutine("SpawnHazard", 10);
     }
 
@@ -120,9 +122,21 @@ public class GameController : MonoBehaviour
                 enemy.transform.position = new Vector3(Random.Range(-5.5f, 5.5f), 0, 16);
                 yield return pointFive;
             }
+
             mRoundCount++;
             Item item = mItemPool.GetFromPool(Random.Range(0, 2));
             item.transform.position = new Vector3(Random.Range(-5.5f, 5.5f), 0, 16);
+
+            if (mRoundCount % 5 == 0)
+            {
+                mBoss.transform.position = new Vector3(0, 0, 20);
+                mBoss.gameObject.SetActive(true);
+                //StopCoroutine(mHazardRoutine);
+                while (mBoss.IsAlive)
+                {
+                    yield return pointFive;
+                }
+            }
         }
     }
 }

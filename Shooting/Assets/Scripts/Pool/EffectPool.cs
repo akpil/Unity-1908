@@ -7,7 +7,8 @@ public enum eEffecttype
 {
     Asteroid,
     Enmey,
-    Player
+    Player,
+    Bomb
 }
 
 public class EffectPool : OBJPool<Timer>
