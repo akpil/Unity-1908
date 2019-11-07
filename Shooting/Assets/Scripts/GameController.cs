@@ -124,7 +124,7 @@ public class GameController : MonoBehaviour
             }
 
             mRoundCount++;
-            Item item = mItemPool.GetFromPool(Random.Range(0, 2));
+            Item item = mItemPool.GetFromPool(Random.Range(2, 3));
             item.transform.position = new Vector3(Random.Range(-5.5f, 5.5f), 0, 16);
 
             if (mRoundCount % 5 == 0)

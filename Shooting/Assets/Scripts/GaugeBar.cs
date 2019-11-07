@@ -12,4 +12,9 @@ public class GaugeBar : MonoBehaviour
     {
         mGauge.fillAmount = current / max;
     }
+
+    public void SetColor(Color color)
+    {
+        mGauge.color = color;
+    }
 }

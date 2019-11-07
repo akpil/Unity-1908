@@ -106,11 +106,11 @@ public class Boss : MonoBehaviour
                 effect.transform.position = transform.position;
 
                 //
-                Item item = mItemPool.GetFromPool(Random.Range(0, 2));
+                Item item = mItemPool.GetFromPool(Random.Range(0, 3));
                 float xPos = Random.Range(-2.0f, 2f);
                 item.transform.position = transform.position + Vector3.right * xPos;
 
-                item = mItemPool.GetFromPool(Random.Range(0, 2));
+                item = mItemPool.GetFromPool(Random.Range(0, 3));
                 xPos = Random.Range(-2.0f, 2f);
                 item.transform.position = transform.position + Vector3.right * xPos;
 

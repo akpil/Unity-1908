@@ -5,7 +5,8 @@ using UnityEngine;
 public enum eItemType
 {
     Bolt,
-    Supporter
+    Supporter,
+    Fuel
 }
 
 public class Item : MonoBehaviour
