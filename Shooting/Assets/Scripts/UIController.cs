@@ -6,12 +6,17 @@ using UnityEngine.UI;
 public class UIController : MonoBehaviour
 {
     [SerializeField]
-    private Text mScoreText, mRestartText, mStateText;
+    private Text mScoreText, mRestartText, mStateText, mPlayerHPText;
     private Coroutine mAlphaAnimRoutine;
     // Start is called before the first frame update
     void Start()
     {
         
+    }
+
+    public void ShowPlayerHP(float current, float max)
+    {
+        mPlayerHPText.text = string.Format("HP: {0}/{1}", current.ToString(), max.ToString());
     }
 
     public void ShowRestartText(bool isActive)

@@ -54,6 +54,7 @@ public class Boss : MonoBehaviour
         {
             yield return oneSec;
             Bolt bolt = mBoltPool.GetFromPool(1);
+            bolt.SetTargetTag("Player");
             bolt.transform.position = mBoltPos.position;
             mSoundController.PlayEffectSound((int)eSoundType.FireEnem);
         }

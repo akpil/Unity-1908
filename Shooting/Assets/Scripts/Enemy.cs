@@ -5,8 +5,12 @@ using UnityEngine;
 public class Enemy : MonoBehaviour
 {
     [SerializeField]
-    private float mSpeed;
+    private float mSpeed, mColDamage;
     private Rigidbody mRB;
+
+    [SerializeField]
+    private float mMaxHP;
+    private float mCurrentHP;
 
     [SerializeField]
     private BoltPool mBoltPool;
@@ -31,6 +35,7 @@ public class Enemy : MonoBehaviour
     private void OnEnable()
     {
         mRB.velocity = Vector3.back * mSpeed;
+        mCurrentHP = mMaxHP;
         StartCoroutine(MovePattern());
         StartCoroutine(AutoFire());
         //InvokeRepeating("AutoFireInvoke", 0.6f, 0.6f); //쓰지마
@@ -39,6 +44,27 @@ public class Enemy : MonoBehaviour
     public void SetBoltPool(BoltPool pool)
     {
         mBoltPool = pool;
+    }
+
+    public void Hit(float value)
+    {
+        mCurrentHP -= value;
+        if (mCurrentHP <= 0)
+        {
+            if (mEffectpool == null)
+            {
+                mEffectpool = GameObject.FindGameObjectWithTag("EffectPool").
+                                        GetComponent<EffectPool>();
+            }
+            Timer effect = mEffectpool.GetFromPool((int)eEffecttype.Enmey);
+            effect.transform.position = transform.position;
+
+            mSoundController.PlayEffectSound((int)eSoundType.ExpEnem);
+
+            mGameController.AddScore(10);
+
+            gameObject.SetActive(false);
+        }
     }
 
     private void AutoFireInvoke()
@@ -56,6 +82,7 @@ public class Enemy : MonoBehaviour
         {
             yield return fireRate;
             Bolt newBolt = mBoltPool.GetFromPool();
+            newBolt.SetTargetTag("Player");
             newBolt.transform.position = mBoltPos.position;
             newBolt.transform.rotation = mBoltPos.rotation;
             mSoundController.PlayEffectSound((int)eSoundType.FireEnem);
@@ -92,23 +119,15 @@ public class Enemy : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.CompareTag("Player") ||
-            other.gameObject.CompareTag("Bolt"))
+        //bool bIsPlayer;
+        //if (bIsPlayer = other.gameObject.CompareTag("Player") ||
+        //    other.gameObject.CompareTag("Bolt"))
+        //{
+
+        //}
+        if (other.gameObject.CompareTag("Player"))
         {
-            if (mEffectpool == null)
-            {
-                mEffectpool = GameObject.FindGameObjectWithTag("EffectPool").
-                                        GetComponent<EffectPool>();
-            }
-            Timer effect = mEffectpool.GetFromPool((int)eEffecttype.Enmey);
-            effect.transform.position = transform.position;
-
-            mSoundController.PlayEffectSound((int)eSoundType.ExpEnem);
-
-            mGameController.AddScore(10);
-
-            gameObject.SetActive(false);
-            other.gameObject.SetActive(false);
+            other.gameObject.SendMessage("Hit", mColDamage);
         }
     }
 }

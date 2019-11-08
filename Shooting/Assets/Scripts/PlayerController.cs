@@ -12,14 +12,25 @@ public class PlayerController : MonoBehaviour
 
     private Rigidbody mRB;
 
+    [Header("HP")]
+    [SerializeField]
+    private float mMaxHP;
+    private float mCurrentHP;
+    [SerializeField]
+    private UIController mUIController;
+
+    [Header("Fuel")]
+    [SerializeField]
+    private GaugeBar mFuelGauge;
     private float mFuel;
     [SerializeField]
     private float mMaxFuel, mFuelSpend;
-    [SerializeField]
-    private GaugeBar mFuelGauge;
 
+    [Header("Fire & Overheat")]
     [SerializeField]
-    private float mFireRate, mOverHeatMax, mOverHeatWeight, mCooldownWeight;
+    private float mFireRate;
+    [SerializeField]
+    private float mOverHeatMax, mOverHeatWeight, mCooldownWeight;
     private float mCurrentFireRate, mCurrentHeat;
     [SerializeField]
     private GaugeBar mOverHeatGauge;
@@ -38,6 +49,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField]
     private Transform[] mSupporterBoltPosArr;
 
+    [Header("Bomb")]
     [SerializeField]
     private BombPool mBombPool;
     [SerializeField]
@@ -50,15 +62,51 @@ public class PlayerController : MonoBehaviour
     private GameController mGameControl;
 
     // Start is called before the first frame update
-    void Start()
+    void Awake()
     {
         mRB = GetComponent<Rigidbody>();
+    }
+
+    private void OnEnable()
+    {
+        mCurrentHP = mMaxHP;
         mCurrentFireRate = 0;
         mFuel = mMaxFuel;
+        mOverHeatGauge.SetValue(mCurrentHeat, mOverHeatMax);
+        Color color = new Color(1, 1 - mCurrentHeat / mOverHeatMax * .8f, 0, 1);
+        mOverHeatGauge.SetColor(color);
+        mFuelGauge.SetValue(mFuel, mMaxFuel);
+        mUIController.ShowPlayerHP(mCurrentHP, mMaxHP);
+    }
+
+    private void Start()
+    {
         mSoundController = GameObject.FindGameObjectWithTag("SoundController").
                                       GetComponent<SoundController>();
         mGameControl = GameObject.FindGameObjectWithTag("GameController").
                                   GetComponent<GameController>();
+    }
+    public void Hit(float value)
+    {
+        mCurrentHP -= value;
+        mUIController.ShowPlayerHP(mCurrentHP, mMaxHP);
+
+        if (mCurrentHP <= 0)
+        {
+            if (mEffectpool == null)
+            {
+                mEffectpool = GameObject.FindGameObjectWithTag("EffectPool").
+                                        GetComponent<EffectPool>();
+            }
+            Timer effect = mEffectpool.GetFromPool((int)eEffecttype.Player);
+            effect.transform.position = transform.position;
+
+            mSoundController.PlayEffectSound((int)eSoundType.ExpPlayer);
+
+            mGameControl.GameOver();
+            gameObject.SetActive(false);
+        }
+
     }
 
     // Update is called once per frame
@@ -140,6 +188,7 @@ public class PlayerController : MonoBehaviour
         for (int i = 0; i < mBoltCount; i++)
         {
             Bolt newBolt = mPool.GetFromPool();
+            newBolt.SetTargetTag("Enemy");
             newBolt.transform.position = pos;
             pos.x += mBoltGap;
         }
@@ -149,6 +198,7 @@ public class PlayerController : MonoBehaviour
             for (int i = 0; i < mSupporterBoltPosArr.Length; i++)
             {
                 Bolt newBolt = mPool.GetFromPool();
+                newBolt.SetTargetTag("Enemy");
                 newBolt.transform.position = mSupporterBoltPosArr[i].position;
             }
         }
@@ -160,20 +210,7 @@ public class PlayerController : MonoBehaviour
     {
         if (other.gameObject.CompareTag("Enemy"))
         {
-            if (mEffectpool == null)
-            {
-                mEffectpool = GameObject.FindGameObjectWithTag("EffectPool").
-                                        GetComponent<EffectPool>();
-            }
-            Timer effect = mEffectpool.GetFromPool((int)eEffecttype.Player);
-            effect.transform.position = transform.position;
-
-            mSoundController.PlayEffectSound((int)eSoundType.ExpPlayer);
-
-            mGameControl.GameOver();
-
-            other.gameObject.SetActive(false);
-            gameObject.SetActive(false);
+            // Give damage to target
         }
     }
 }

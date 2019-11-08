@@ -6,7 +6,11 @@ public class Asteroid : MonoBehaviour
 {
     private Rigidbody mRB;
     [SerializeField]
-    private float mSpeed, mTorque;
+    private float mSpeed, mTorque, mColDamage;
+
+    [SerializeField]
+    private float mMaxHP;
+    private float mCurrentHp;
 
     private EffectPool mEffectpool;
 
@@ -25,39 +29,40 @@ public class Asteroid : MonoBehaviour
     private void OnEnable()
     {
         mRB.angularVelocity = Random.onUnitSphere * mTorque;
+        mCurrentHp = mMaxHP;
     }
 
-    // Start is called before the first frame update
-    void Start()
+    public void Hit(float value)
     {
-        
-        
-    }
-
-    private void OnTriggerEnter(Collider other)
-    {
-        if (other.gameObject.CompareTag("Player") ||
-            other.gameObject.CompareTag("Bolt"))
+        mCurrentHp -= value;
+        if (mCurrentHp <= 0)
         {
             if (mEffectpool == null)
             {
                 mEffectpool = GameObject.FindGameObjectWithTag("EffectPool").
                                         GetComponent<EffectPool>();
             }
-            Timer effect = mEffectpool.GetFromPool((int)eEffecttype.Asteroid);
+            Timer effect = mEffectpool.GetFromPool((int)eEffecttype.Enmey);
             effect.transform.position = transform.position;
 
             if (mSoundController == null)
             {
                 mSoundController = GameObject.FindGameObjectWithTag("SoundController").
-                                        GetComponent<SoundController>();
+                                            GetComponent<SoundController>();
             }
-            mSoundController.PlayEffectSound((int)eSoundType.ExpAst);
+            mSoundController.PlayEffectSound((int)eSoundType.ExpEnem);
 
-            mGameController.AddScore(1);
+            mGameController.AddScore(10);
 
             gameObject.SetActive(false);
-            other.gameObject.SetActive(false);
+        }
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.gameObject.CompareTag("Player"))
+        {
+            other.gameObject.SendMessage("Hit", mColDamage);
         }
     }
 }
