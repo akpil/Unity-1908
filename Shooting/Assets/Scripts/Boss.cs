@@ -88,37 +88,40 @@ public class Boss : MonoBehaviour
         }
     }
 
+    public void Hit(float value)
+    {
+        if (mbInvinsible)
+        {
+            return;
+        }
+        mCurrentHP -= value;
+        mHPBar.SetValue(mCurrentHP, mMaxHP);
+
+        if (mCurrentHP <= 0)
+        {
+            mSoundController.PlayEffectSound((int)eSoundType.ExpPlayer);
+            Timer effect = mEffectPool.GetFromPool((int)eEffecttype.Player);
+            effect.transform.position = transform.position;
+
+            //
+            Item item = mItemPool.GetFromPool(Random.Range(0, 3));
+            float xPos = Random.Range(-2.0f, 2f);
+            item.transform.position = transform.position + Vector3.right * xPos;
+
+            item = mItemPool.GetFromPool(Random.Range(0, 3));
+            xPos = Random.Range(-2.0f, 2f);
+            item.transform.position = transform.position + Vector3.right * xPos;
+
+            gameObject.SetActive(false);
+            mHPBar.gameObject.SetActive(false);
+        }
+    }
+
     private void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.CompareTag("Player") ||
-            other.gameObject.CompareTag("Bolt"))
+        if (other.gameObject.CompareTag("Player"))
         {
-            if (mbInvinsible)
-            {
-                return;
-            }
-            mCurrentHP -= 1;
-            mHPBar.SetValue(mCurrentHP, mMaxHP);            
-
-            if (mCurrentHP <= 0)
-            {
-                mSoundController.PlayEffectSound((int)eSoundType.ExpPlayer);
-                Timer effect = mEffectPool.GetFromPool((int)eEffecttype.Player);
-                effect.transform.position = transform.position;
-
-                //
-                Item item = mItemPool.GetFromPool(Random.Range(0, 3));
-                float xPos = Random.Range(-2.0f, 2f);
-                item.transform.position = transform.position + Vector3.right * xPos;
-
-                item = mItemPool.GetFromPool(Random.Range(0, 3));
-                xPos = Random.Range(-2.0f, 2f);
-                item.transform.position = transform.position + Vector3.right * xPos;
-
-                gameObject.SetActive(false);
-                mHPBar.gameObject.SetActive(false);
-            }
-            other.gameObject.SetActive(false);
+            other.gameObject.SendMessage("Hit", 5);
         }
     }
 }

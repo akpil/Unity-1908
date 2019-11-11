@@ -6,12 +6,19 @@ using UnityEngine.UI;
 public class UIController : MonoBehaviour
 {
     [SerializeField]
+    private GameObject[] mLifeIcon;
+    [SerializeField]
     private Text mScoreText, mRestartText, mStateText, mPlayerHPText;
     private Coroutine mAlphaAnimRoutine;
     // Start is called before the first frame update
     void Start()
     {
         
+    }
+
+    public void LooseLife(int curr)
+    {
+        mLifeIcon[curr].SetActive(false);
     }
 
     public void ShowPlayerHP(float current, float max)

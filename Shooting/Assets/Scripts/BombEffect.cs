@@ -8,11 +8,11 @@ public class BombEffect : MonoBehaviour
     {
         if (other.gameObject.CompareTag("Enemy"))
         {
-            other.gameObject.SetActive(false);
+            other.gameObject.SendMessage("Hit", 10);
         }
-        else if (other.gameObject.CompareTag("Boss"))
+        else if (other.gameObject.CompareTag("EnemyBolt"))
         {
-            Debug.Log("Give Damage to boss");
+            other.gameObject.SetActive(false);
         }
     }
 }

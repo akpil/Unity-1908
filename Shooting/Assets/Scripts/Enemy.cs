@@ -7,7 +7,10 @@ public class Enemy : MonoBehaviour
     [SerializeField]
     private float mSpeed, mColDamage;
     private Rigidbody mRB;
-
+    [SerializeField]
+    private Transform mHPBarPos;
+    [SerializeField]
+    private GaugeBar mHPBar;
     [SerializeField]
     private float mMaxHP;
     private float mCurrentHP;
@@ -49,6 +52,8 @@ public class Enemy : MonoBehaviour
     public void Hit(float value)
     {
         mCurrentHP -= value;
+        mHPBar = mBoltPool.EnemyHPBarPool.GetFromPool();
+        mHPBar.transform.position = mHPBarPos.position;
         if (mCurrentHP <= 0)
         {
             if (mEffectpool == null)
@@ -63,7 +68,17 @@ public class Enemy : MonoBehaviour
 
             mGameController.AddScore(10);
 
+            mHPBar.gameObject.SetActive(false);
+            mHPBar = null;
             gameObject.SetActive(false);
+        }
+    }
+
+    private void Update()
+    {
+        if (mHPBar != null)
+        {
+            mHPBar.transform.position = mHPBarPos.position;
         }
     }
 

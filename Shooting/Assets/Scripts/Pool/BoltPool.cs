@@ -4,4 +4,6 @@ using UnityEngine;
 
 public class BoltPool : OBJPool<Bolt>
 {
+    [SerializeField]
+    public EnemyHpBarPool EnemyHPBarPool;
 }

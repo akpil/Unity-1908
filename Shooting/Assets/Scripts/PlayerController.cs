@@ -70,13 +70,23 @@ public class PlayerController : MonoBehaviour
     private void OnEnable()
     {
         mCurrentHP = mMaxHP;
+        mUIController.ShowPlayerHP(mCurrentHP, mMaxHP);
+
         mCurrentFireRate = 0;
+        mBoltCount = 1;
+
+        mSupporterFlag = false;
+        for (int i = 0; i < mSupporterArr.Length; i++)
+        {
+            mSupporterArr[i].gameObject.SetActive(false);
+        }
+
         mFuel = mMaxFuel;
+        mFuelGauge.SetValue(mFuel, mMaxFuel);
+
         mOverHeatGauge.SetValue(mCurrentHeat, mOverHeatMax);
         Color color = new Color(1, 1 - mCurrentHeat / mOverHeatMax * .8f, 0, 1);
         mOverHeatGauge.SetColor(color);
-        mFuelGauge.SetValue(mFuel, mMaxFuel);
-        mUIController.ShowPlayerHP(mCurrentHP, mMaxHP);
     }
 
     private void Start()
@@ -103,8 +113,8 @@ public class PlayerController : MonoBehaviour
 
             mSoundController.PlayEffectSound((int)eSoundType.ExpPlayer);
 
-            mGameControl.GameOver();
             gameObject.SetActive(false);
+            mGameControl.GameOver();
         }
 
     }
@@ -210,7 +220,7 @@ public class PlayerController : MonoBehaviour
     {
         if (other.gameObject.CompareTag("Enemy"))
         {
-            // Give damage to target
+            other.gameObject.SendMessage("Hit", 3);
         }
     }
 }

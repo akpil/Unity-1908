@@ -11,6 +11,9 @@ public class GameController : MonoBehaviour
     private UIController mUIControl;
     [SerializeField]
     private PlayerController mPlayer;
+    [SerializeField]
+    private int mStartLife;
+    private int mCurrentLife;
     private bool mbRestart;
     [SerializeField]
     private ItemPool mItemPool;
@@ -37,8 +40,8 @@ public class GameController : MonoBehaviour
         mUIControl.ShowScore(mScore);
         mRoundCount = 0;
         mCountdown = mPeriod;
+        mCurrentLife = mStartLife;
         mHazardRoutine = StartCoroutine(SpawnHazard());
-        //StartCoroutine("SpawnHazard", 10);
     }
 
     public void AddScore(float amount)
@@ -49,6 +52,14 @@ public class GameController : MonoBehaviour
 
     public void GameOver()
     {
+        mCurrentLife--;
+        mUIControl.LooseLife(mCurrentLife);
+        if (mCurrentLife > 0)
+        {
+            mPlayer.transform.position = Vector3.zero;
+            mPlayer.gameObject.SetActive(true);
+            return;
+        }
         mbRestart = true;
         mUIControl.ShowState("Game Over!");
         mUIControl.ShowRestartText(true);
