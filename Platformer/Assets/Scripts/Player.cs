@@ -6,7 +6,7 @@ public class Player : MonoBehaviour
 {
     private Rigidbody2D mRB2D;
     private Animator mAnim;
-    private int mWalkHash, mMeleeHash;
+    private int mWalkHash, mMeleeHash, mJumpHash;
     private int mJumpCount;
     [SerializeField]
     private float mSpeed;
@@ -17,6 +17,7 @@ public class Player : MonoBehaviour
         mAnim = GetComponent<Animator>();
         mWalkHash = Animator.StringToHash("IsWalk");
         mMeleeHash = Animator.StringToHash("IsAttack");
+        mJumpHash = Animator.StringToHash("Jump");
         mJumpCount = 0;
     }
 
@@ -44,10 +45,11 @@ public class Player : MonoBehaviour
 
         if (mJumpCount < 1 && Input.GetButtonDown("Jump"))
         {
-            mRB2D.velocity += Vector2.up * 10;
+            mRB2D.velocity = new Vector2(mRB2D.velocity.x, 10);
             mJumpCount++;
             //mRB2D.AddForce(Vector2.up * 300);
         }
+        mAnim.SetFloat(mJumpHash, mRB2D.velocity.y);
 
         if (Input.GetButtonDown("Fire1"))
         {
@@ -61,7 +63,7 @@ public class Player : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.gameObject.CompareTag("Ground"))
+        if (collision.enabled && collision.gameObject.CompareTag("Ground"))
         {
             mJumpCount = 0;
         }
