@@ -6,10 +6,11 @@ public class Player : MonoBehaviour
 {
     private Rigidbody2D mRB2D;
     private Animator mAnim;
-    private int mWalkHash, mMeleeHash, mJumpHash;
+    private int mWalkHash, mMeleeHash, mJumpHash, mDieHash;
     private int mJumpCount;
     [SerializeField]
     private float mSpeed;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -18,13 +19,32 @@ public class Player : MonoBehaviour
         mWalkHash = Animator.StringToHash("IsWalk");
         mMeleeHash = Animator.StringToHash("IsAttack");
         mJumpHash = Animator.StringToHash("Jump");
+        mDieHash = Animator.StringToHash("IsDead");
         mJumpCount = 0;
+    }
+
+    public void Kill()
+    {
+        mAnim.SetBool(mDieHash, true);
+    }
+
+    public void AttackTarget(GameObject target)
+    {
+        target.SendMessage("Hit", 1);
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+        if(mAnim.GetBool(mDieHash))
+        {
+            if (Input.GetKeyDown(KeyCode.R))
+            {
+                mAnim.SetBool(mDieHash, false);
+            }
+            return;
+        }
+
         float horizontal = Input.GetAxis("Horizontal");
         mRB2D.velocity = new Vector2(horizontal * mSpeed, mRB2D.velocity.y);
 
