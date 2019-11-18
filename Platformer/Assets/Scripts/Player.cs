@@ -6,7 +6,7 @@ public class Player : MonoBehaviour
 {
     private Rigidbody2D mRB2D;
     private Animator mAnim;
-    private int mWalkHash, mMeleeHash, mJumpHash, mDieHash;
+    
     private int mJumpCount;
     [SerializeField]
     private float mSpeed;
@@ -16,16 +16,12 @@ public class Player : MonoBehaviour
     {
         mRB2D = GetComponent<Rigidbody2D>();
         mAnim = GetComponent<Animator>();
-        mWalkHash = Animator.StringToHash("IsWalk");
-        mMeleeHash = Animator.StringToHash("IsAttack");
-        mJumpHash = Animator.StringToHash("Jump");
-        mDieHash = Animator.StringToHash("IsDead");
         mJumpCount = 0;
     }
 
     public void Kill()
     {
-        mAnim.SetBool(mDieHash, true);
+        mAnim.SetBool(AnimHash.Dead, true);
     }
 
     public void AttackTarget(GameObject target)
@@ -36,11 +32,11 @@ public class Player : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(mAnim.GetBool(mDieHash))
+        if(mAnim.GetBool(AnimHash.Dead))
         {
             if (Input.GetKeyDown(KeyCode.R))
             {
-                mAnim.SetBool(mDieHash, false);
+                mAnim.SetBool(AnimHash.Dead, false);
             }
             return;
         }
@@ -51,16 +47,16 @@ public class Player : MonoBehaviour
         if (horizontal < 0)
         {
             transform.rotation = Quaternion.Euler(0, 180, 0);
-            mAnim.SetBool(mWalkHash, true);
+            mAnim.SetBool(AnimHash.Walk, true);
         }
         else if(horizontal > 0)
         {
             transform.rotation = Quaternion.Euler(0, 0, 0);
-            mAnim.SetBool(mWalkHash, true);
+            mAnim.SetBool(AnimHash.Walk, true);
         }
         else
         {
-            mAnim.SetBool(mWalkHash, false);
+            mAnim.SetBool(AnimHash.Walk, false);
         }
 
         if (mJumpCount < 1 && Input.GetButtonDown("Jump"))
@@ -69,15 +65,15 @@ public class Player : MonoBehaviour
             mJumpCount++;
             //mRB2D.AddForce(Vector2.up * 300);
         }
-        mAnim.SetFloat(mJumpHash, mRB2D.velocity.y);
+        mAnim.SetFloat(AnimHash.Jump, mRB2D.velocity.y);
 
         if (Input.GetButtonDown("Fire1"))
         {
-            mAnim.SetBool(mMeleeHash, true);
+            mAnim.SetBool(AnimHash.Attack, true);
         }
         else if(Input.GetButtonUp("Fire1"))
         {
-            mAnim.SetBool(mMeleeHash, false);
+            mAnim.SetBool(AnimHash.Attack, false);
         }
     }
 
