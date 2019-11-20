@@ -75,6 +75,14 @@ public class Enemy : MonoBehaviour
         }
     }
 
+    private void OnCollisionStay2D(Collision2D collision)
+    {
+        if (collision.gameObject.CompareTag("Player"))
+        {
+            mRB2D.velocity = Vector2.zero;
+        }
+    }
+
     private void OnCollisionExit2D(Collision2D collision)
     {
         if (mState == eEnemyState.Die)
@@ -86,6 +94,21 @@ public class Enemy : MonoBehaviour
             mTarget = null;
             mState = eEnemyState.Idle;
         }
+    }
+
+    
+
+    public void Attack()
+    {
+        if (mTarget != null)
+        {
+            mTarget.Hit(1);
+        }
+        else
+        {
+            Debug.Log("Player lost");
+        }
+        mAnim.SetBool(AnimHash.Attack, false);
     }
 
     public void StateCheck()

@@ -10,6 +10,9 @@ public class Player : MonoBehaviour
     private int mJumpCount;
     [SerializeField]
     private float mSpeed;
+    [SerializeField]
+    private float mHP;
+    private float mCurrentHP;
 
     // Start is called before the first frame update
     void Start()
@@ -17,11 +20,21 @@ public class Player : MonoBehaviour
         mRB2D = GetComponent<Rigidbody2D>();
         mAnim = GetComponent<Animator>();
         mJumpCount = 0;
+        mCurrentHP = mHP;
     }
 
     public void Kill()
     {
         mAnim.SetBool(AnimHash.Dead, true);
+    }
+
+    public void Hit(float damage)
+    {
+        mCurrentHP -= damage;
+        if (mCurrentHP <= 0)
+        {
+            mAnim.SetBool(AnimHash.Dead, true);
+        }
     }
 
     public void AttackTarget(GameObject target)
@@ -37,6 +50,7 @@ public class Player : MonoBehaviour
             if (Input.GetKeyDown(KeyCode.R))
             {
                 mAnim.SetBool(AnimHash.Dead, false);
+                mCurrentHP = mHP;
             }
             return;
         }
