@@ -4,8 +4,22 @@ using UnityEngine;
 
 public class UIController : MonoBehaviour
 {
+    public static UIController Instance;
+
     [SerializeField]
     private GaugeBar mPlayerGaugeBar;
+
+    private void Awake()
+    {
+        if (Instance == null)
+        {
+            Instance = this;
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
+    }
 
     public void ShowHP(float cur, float max)
     {

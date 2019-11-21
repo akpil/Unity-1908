@@ -7,9 +7,6 @@ public class Player : MonoBehaviour
     private Rigidbody2D mRB2D;
     private Animator mAnim;
 
-    [SerializeField]
-    private UIController mUIController;
-
     private int mJumpCount;
     [SerializeField]
     private float mSpeed;
@@ -24,7 +21,7 @@ public class Player : MonoBehaviour
         mAnim = GetComponent<Animator>();
         mJumpCount = 0;
         mCurrentHP = mHP;
-        mUIController.ShowHP(mCurrentHP, mHP);
+        IngameController.Instance.ShowPlayerHP(mCurrentHP, mHP);
     }
 
     public void Kill()
@@ -35,7 +32,7 @@ public class Player : MonoBehaviour
     public void Hit(float damage)
     {
         mCurrentHP -= damage;
-        mUIController.ShowHP(mCurrentHP, mHP);
+        IngameController.Instance.ShowPlayerHP(mCurrentHP, mHP);
         if (mCurrentHP <= 0)
         {
             mAnim.SetBool(AnimHash.Dead, true);
@@ -56,7 +53,7 @@ public class Player : MonoBehaviour
             {
                 mAnim.SetBool(AnimHash.Dead, false);
                 mCurrentHP = mHP;
-                mUIController.ShowHP(mCurrentHP, mHP);
+                IngameController.Instance.ShowPlayerHP(mCurrentHP, mHP);
             }
             return;
         }

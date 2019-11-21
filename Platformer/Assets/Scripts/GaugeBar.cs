@@ -8,9 +8,9 @@ using TMPro;
 public class GaugeBar : MonoBehaviour
 {
     [SerializeField]
-    private Image mBar;
+    protected Image mBar;
     [SerializeField]
-    private TextMeshProUGUI mValueText;
+    protected TextMeshProUGUI mValueText;
 
     public void ShowGauge(float currnet, float max)
     {
