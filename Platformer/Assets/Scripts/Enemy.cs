@@ -21,6 +21,10 @@ public class Enemy : MonoBehaviour
     private Player mTarget;
     [SerializeField]
     private float mHP;
+    [SerializeField]
+    private Transform mHPBarPos;
+    private EnemyHPbar mHPBar;
+
     private float mCurrentHP;
     private Timer mTimer;
     // Start is called before the first frame update
@@ -32,20 +36,43 @@ public class Enemy : MonoBehaviour
     }
     private void OnEnable()
     {
+        mTimer.StopWorking();
         mState = eEnemyState.Idle;
         mTimer.enabled = false;
         mStateMachine = StartCoroutine(AutoMove());
         mCurrentHP = mHP;
+        Debug.Log(EnemyHPBarPool.Instance);
+        mHPBar = EnemyHPBarPool.Instance.GetFromPool();
+
+        mHPBar.ShowGauge(mCurrentHP, mHP);
+        //Vector3 screenPos = Camera.main.WorldToScreenPoint(mHPBarPos.position);
+        mHPBar.transform.position = mHPBarPos.position;
+    }
+
+    private void Update()
+    {
+        if (mHPBar != null)
+        {
+            //Vector3 screenPos = Camera.main.WorldToScreenPoint(mHPBarPos.position);
+            mHPBar.transform.position = mHPBarPos.position;
+        }
     }
 
     public void Hit(float damage)
     {
         mCurrentHP -= damage;
+        if (mHPBar == null)
+        {
+            return;
+        }
+        mHPBar.ShowGauge(mCurrentHP, mHP);
         if (mCurrentHP <= 0)
         {
             mState = eEnemyState.Die;
             StateCheck();
             StopCoroutine(mStateMachine);
+            mHPBar.ShowPoint(2);
+            mHPBar = null;
         }
     }
 

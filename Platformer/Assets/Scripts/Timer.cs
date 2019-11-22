@@ -6,14 +6,23 @@ public class Timer : MonoBehaviour
 {
     [SerializeField]
     private float mTime;
+    private Coroutine mRoutine;
     private void OnEnable()
     {
-        StartCoroutine(Timeout());
+        mRoutine = StartCoroutine(Timeout());
     }
 
     private IEnumerator Timeout()
     {
         yield return new WaitForSeconds(mTime);
         gameObject.SetActive(false);
+    }
+
+    public void StopWorking()
+    {
+        if (mRoutine != null)
+        {
+            StopCoroutine(mRoutine);
+        }
     }
 }

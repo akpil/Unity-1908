@@ -22,7 +22,7 @@ public class OBJPool<T> : MonoBehaviour where T : Component
         }
     }
 
-    public T GetFromPool(int id)
+    public T GetFromPool(int id = 0)
     {
         for (int i = 0; i < mPool[id].Count; i++)
         {

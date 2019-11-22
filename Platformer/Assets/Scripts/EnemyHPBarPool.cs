@@ -18,6 +18,7 @@ public class EnemyHPBarPool : OBJPool<EnemyHPbar>
             Destroy(gameObject);
         }
         PoolSetUP();
+        Debug.Log("sfsdfsdfsdf");
     }
 
     protected override EnemyHPbar GetNewObj(int id)
