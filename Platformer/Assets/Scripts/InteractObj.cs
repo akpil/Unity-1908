@@ -36,6 +36,7 @@ public class InteractObj : MonoBehaviour
         if (mCurrentCount == mCount)
         {
             Debug.Log("Key active");
+            IngameController.Instance.MoveCamera();
         }
         else
         {
