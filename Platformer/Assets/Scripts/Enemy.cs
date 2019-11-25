@@ -73,6 +73,7 @@ public class Enemy : MonoBehaviour
             StopCoroutine(mStateMachine);
             mHPBar.ShowPoint(2);
             mHPBar = null;
+            IngameController.Instance.AddScore(1);
         }
     }
 

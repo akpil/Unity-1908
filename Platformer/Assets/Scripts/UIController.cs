@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 
 public class UIController : MonoBehaviour
 {
@@ -8,6 +9,9 @@ public class UIController : MonoBehaviour
 
     [SerializeField]
     private GaugeBar mPlayerGaugeBar;
+
+    [SerializeField]
+    private TextMeshProUGUI mScoreText;
 
     private void Awake()
     {
@@ -19,6 +23,11 @@ public class UIController : MonoBehaviour
         {
             Destroy(gameObject);
         }
+    }
+
+    public void ShowScore(int value)
+    {
+        mScoreText.text = value.ToString("N0");
     }
 
     public void ShowHP(float cur, float max)

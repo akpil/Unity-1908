@@ -15,6 +15,8 @@ public class IngameController : MonoBehaviour
     private int mEnemySpawnCount;
     private int mCurrentEnemyCount;
 
+    private int mScore;
+
     private CameraMovement mCameraMove;
     private void Awake()
     {
@@ -27,11 +29,6 @@ public class IngameController : MonoBehaviour
             Destroy(gameObject);
         }
         mCameraMove = Camera.main.GetComponent<CameraMovement>();// 추천X
-        for(mCurrentEnemyCount = 0; mCurrentEnemyCount < mEnemySpawnCount; mCurrentEnemyCount++)
-        {
-            Enemy e = mEnemyPool.GetFromPool(Random.Range(0, 2));
-            e.transform.position = mEnemySpawnPos.position;
-        }
         //GameObject[] enemyArr = GameObject.FindGameObjectsWithTag("Enemy");
         //if(enemyArr.Length < mEnemySpawnCount)
         //{
@@ -44,11 +41,42 @@ public class IngameController : MonoBehaviour
         mCameraMove.MoveCamera();
     }
 
-
     // Start is called before the first frame update
     void Start()
     {
-        
+        mScore = 0;
+        UIController.Instance.ShowScore(mScore);
+        for (mCurrentEnemyCount = 0; mCurrentEnemyCount < mEnemySpawnCount; mCurrentEnemyCount++)
+        {
+            Enemy e = mEnemyPool.GetFromPool(Random.Range(0, 2));
+            e.transform.position = mEnemySpawnPos.position;
+        }
+        StartCoroutine(EnemySpawn());
+    }
+
+    private Coroutine mSpawnRoutine;
+    private IEnumerator EnemySpawn()
+    {
+        WaitForSeconds five = new WaitForSeconds(5);
+        while(mCurrentEnemyCount < mEnemySpawnCount)
+        {
+            yield return five;
+            Enemy e = mEnemyPool.GetFromPool(Random.Range(0, 2));
+            e.transform.position = mEnemySpawnPos.position;
+            mCurrentEnemyCount++;
+        }
+        mSpawnRoutine = null;
+    }
+    
+    public void AddScore(int value)
+    {
+        mScore += value;
+        UIController.Instance.ShowScore(mScore);
+        mCurrentEnemyCount--;
+        if(mSpawnRoutine == null)
+        {
+            mSpawnRoutine = StartCoroutine(EnemySpawn());
+        }
     }
 
     public void ShowPlayerHP(float cur, float max)
