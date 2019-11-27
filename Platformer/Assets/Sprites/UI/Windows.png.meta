@@ -613,13 +613,13 @@ TextureImporter:
       name: Windows_23
       rect:
         serializedVersion: 2
-        x: 3531
+        x: 3533
         y: 1249
         width: 276
         height: 93
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
+      border: {x: 20, y: 20, z: 20, w: 20}
       outline: []
       physicsShape: []
       tessellationDetail: 0
