@@ -13,10 +13,13 @@ public class ScrollElement : MonoBehaviour
     [SerializeField]
     private Button mPurchaseButton;
     private int mID;
-    private void Awake()
+    private void Start()
     {
         // only for button
-        mPurchaseButton.onClick.AddListener(() => { });
+        mPurchaseButton.onClick.AddListener(() => 
+                        {
+                            LobbyUIController.Instance.SetButtonDown(mID);
+                        });
     }
     public void SetUP(int id, Sprite icon, string title, string level, string contents, string cost)
     {
