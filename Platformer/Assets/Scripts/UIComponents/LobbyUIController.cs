@@ -6,7 +6,7 @@ using UnityEngine.UI;
 public class LobbyUIController : MonoBehaviour
 {
     public static LobbyUIController Instance;
-    private Item[] mInfoArr;
+    
     [SerializeField]
     private ScrollElement[] mElementArr;
     [SerializeField]
@@ -24,44 +24,22 @@ public class LobbyUIController : MonoBehaviour
         {
             Destroy(gameObject);
         }
-
-        mInfoArr = new Item[3];
-        mInfoArr[0] = new Item();
-        mInfoArr[0].Title = "HP";
-        mInfoArr[0].Contents = "Add HP";
-        mInfoArr[0].Level = 1;
-        mInfoArr[0].MaxLevel = 10;
-        mInfoArr[0].Cost = 100;
-        mInfoArr[0].CostWeight = 200;
-
-        mInfoArr[1] = new Item();
-        mInfoArr[1].Title = "Def";
-        mInfoArr[1].Contents = "Add Def";
-        mInfoArr[1].Level = 1;
-        mInfoArr[1].MaxLevel = 50;
-        mInfoArr[1].Cost = 200;
-        mInfoArr[1].CostWeight = 250;
-
-        mInfoArr[2] = new Item();
-        mInfoArr[2].Title = "Abil";
-        mInfoArr[2].Contents = "Add Abil";
-        mInfoArr[2].Level = 1;
-        mInfoArr[2].MaxLevel = 20;
-        mInfoArr[2].Cost = 250;
-        mInfoArr[2].CostWeight = 300;
+        
     }
     void Start()
     {
         for(int i = 0; i < mElementArr.Length; i++)
         {
+            Item data = GameDataController.Instance.GetInfo(i);
             mElementArr[i].SetUP(i, mIconArr[i],
-                                mInfoArr[i].Title,
-                                mInfoArr[i].Level.ToString(),
-                                mInfoArr[i].Contents,
-                                mInfoArr[i].Cost.ToString());
+                                data.Title,
+                                data.Contents,
+                                data.Level.ToString(),
+                                data.Cost.ToString());
         }
     }
 
+    //고치기 숙제
     public void SetButtonDown(int id)
     {
         //돈확인
@@ -94,14 +72,3 @@ public class LobbyUIController : MonoBehaviour
     }
 }
 
-public class Item
-{
-    public int ID;
-    public int IconID;
-    public string Title;
-    public string Contents;
-    public int Level;
-    public int MaxLevel;
-    public int Cost;
-    public int CostWeight;
-}
