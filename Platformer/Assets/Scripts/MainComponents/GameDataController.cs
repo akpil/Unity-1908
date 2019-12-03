@@ -49,6 +49,22 @@ public class GameDataController : MonoBehaviour
         return mInfoArr[id];
     }
 
+    public bool LevelUP(int id, int amount)
+    {
+        if(mInfoArr[id].Level + amount <= mInfoArr[id].MaxLevel)
+        {
+            mInfoArr[id].Level += amount;
+            mInfoArr[id].Cost += mInfoArr[id].CostWeight * mInfoArr[id].Level;
+            return true;
+        }
+        return false;
+    }
+
+    public void RenewElement(int id, ScrollElement elem)
+    {
+        elem.Renew(mInfoArr[id].Level.ToString(), mInfoArr[id].Contents, mInfoArr[id].Cost.ToString());
+    }
+
     public void SetElement(int id, Sprite icon, ScrollElement elem)
     {
         elem.SetUP(id, icon, mInfoArr[id].Title,

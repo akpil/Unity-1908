@@ -42,17 +42,14 @@ public class LobbyUIController : MonoBehaviour
     //고치기 숙제
     public void SetButtonDown(int id)
     {
-        //돈확인
+        //돈확인 -> 돈 소모
         //레벨확인 -> 레벨업
-        if(mInfoArr[id].Level + 1 <= mInfoArr[id].MaxLevel)
+        if(!GameDataController.Instance.LevelUP(id, 1))
         {
-            mInfoArr[id].Level++;
-            mInfoArr[id].Cost += mInfoArr[id].CostWeight * mInfoArr[id].Level;
+            // 돈 반환
         }
         //UI갱신
-        mElementArr[id].Renew(mInfoArr[id].Level.ToString(),
-                              mInfoArr[id].Contents,
-                              mInfoArr[id].Cost.ToString());
+        GameDataController.Instance.RenewElement(id, mElementArr[id]);
     }
 
     private void Test()
