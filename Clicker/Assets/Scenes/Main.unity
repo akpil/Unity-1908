@@ -392,7 +392,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   mTouchCamera: {fileID: 1575009604}
-  mDummy: {fileID: 8754334646864321331, guid: 2a773fbe3b0554344b32b0a11f8fd140, type: 3}
+  mDummy: {fileID: 811873858309953796, guid: f017f3e7e54900745a83953a0ca1574a, type: 3}
 --- !u!1 &209008378
 GameObject:
   m_ObjectHideFlags: 0

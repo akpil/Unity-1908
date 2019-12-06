@@ -18,9 +18,33 @@ public class TouchManager : MonoBehaviour
         return new Ray(nearPlane, farPlane - nearPlane);
     }
 
+    public bool GetTouch()
+    {
+        for (int i = 0; i < Input.touchCount; i++)
+        {
+            Touch touch = Input.GetTouch(i);
+            if (touch.phase == TouchPhase.Began)
+            {
+                Ray ray = GenerateRay(touch.position);
+                RaycastHit hit;
+                if (Physics.Raycast(ray, out hit))
+                {
+                    if (hit.collider.gameObject == gameObject)
+                    {
+                        GameObject dummy = Instantiate(mDummy);
+                        dummy.transform.position = hit.point;
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
+    }
+
     // Update is called once per frame
     void Update()
     {
+#if UNITY_EDITOR
         if (Input.GetMouseButtonDown(0))
         {
             Ray ray = GenerateRay(Input.mousePosition);
@@ -34,6 +58,11 @@ public class TouchManager : MonoBehaviour
                     // GameController.Touch();
                 }
             }
+        }
+#endif
+        if (GetTouch())
+        {
+            // GameController.Touch();
         }
     }
 }
