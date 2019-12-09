@@ -10,6 +10,7 @@ public class TitleController : MonoBehaviour
     private Button mStartButton;
     [SerializeField]
     private Text mStatusText;
+    ObjPool<Transform> mTransform;
     // Start is called before the first frame update
     void Start()
     {

@@ -2,18 +2,18 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ObjPool : MonoBehaviour
+public class ObjPool<T> : MonoBehaviour where T : Component
 {
     [SerializeField]
-    private GameObject[] mOriginArr;
-    private List<GameObject>[] mPool;
+    private T[] mOriginArr;
+    private List<T>[] mPool;
 
     protected void PoolSetup()
     {
-        mPool = new List<GameObject>[mOriginArr.Length];
+        mPool = new List<T>[mOriginArr.Length];
         for(int i =0; i < mPool.Length; i++)
         {
-            mPool[i] = new List<GameObject>();
+            mPool[i] = new List<T>();
         }
     }
     // Start is called before the first frame update
@@ -22,7 +22,7 @@ public class ObjPool : MonoBehaviour
         PoolSetup();
     }
 
-    public GameObject GetFromPool(int id)
+    public T GetFromPool(int id)
     {
         for(int i= 0; i < mPool[id].Count; i++)
         {
@@ -32,6 +32,12 @@ public class ObjPool : MonoBehaviour
                 return mPool[id][i];
             }
         }
-
+        return GetNewObj(id);
+    }
+    protected virtual T GetNewObj(int id)
+    {
+        T newObj = Instantiate(mOriginArr[id]);
+        mPool[id].Add(newObj);
+        return newObj;
     }
 }

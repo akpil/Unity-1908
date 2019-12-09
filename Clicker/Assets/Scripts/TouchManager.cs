@@ -7,7 +7,7 @@ public class TouchManager : MonoBehaviour
     [SerializeField]
     private Camera mTouchCamera;
     [SerializeField]
-    private GameObject mDummy;
+    private EffectPool mEffectPool;
  
     public Ray GenerateRay(Vector3 screenPos)
     {
@@ -31,8 +31,8 @@ public class TouchManager : MonoBehaviour
                 {
                     if (hit.collider.gameObject == gameObject)
                     {
-                        GameObject dummy = Instantiate(mDummy);
-                        dummy.transform.position = hit.point;
+                        Timer effect = mEffectPool.GetFromPool(0);
+                        effect.transform.position = hit.point;
                         return true;
                     }
                 }
@@ -53,8 +53,8 @@ public class TouchManager : MonoBehaviour
             {
                 if(hit.collider.gameObject == gameObject)
                 {
-                    GameObject dummy = Instantiate(mDummy);
-                    dummy.transform.position = hit.point;
+                    Timer effect = mEffectPool.GetFromPool(0);
+                    effect.transform.position = hit.point;
                     // GameController.Touch();
                 }
             }
