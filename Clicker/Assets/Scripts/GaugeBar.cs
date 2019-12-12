@@ -7,14 +7,11 @@ public class GaugeBar : MonoBehaviour
 {
     [SerializeField]
     private Image mGaugeBarImage;
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    public void ShowGaugeBar(float progress)
+    [SerializeField]
+    private Text mGaugeBarText;
+    public void ShowGaugeBar(float progress, string text)
     {
         mGaugeBarImage.fillAmount = progress;
+        mGaugeBarText.text = text;
     }
 }

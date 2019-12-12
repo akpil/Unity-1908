@@ -27,13 +27,13 @@ public class GemController : MonoBehaviour
         mCurrentHP = 0;
         mMaxHP = 100;
         mPhaseBoundary = mMaxHP * 0.2f * (mCurrentPhase + 1);
-        MainUIController.Instance.ShowProgress(0);
+        MainUIController.Instance.ShowProgress(mCurrentHP, mMaxHP);
     }
 
     public bool AddProgress(double value)
     {
         mCurrentHP += value;
-        MainUIController.Instance.ShowProgress((float)(mCurrentHP/ mMaxHP));
+        MainUIController.Instance.ShowProgress(mCurrentHP, mMaxHP);
         if (mCurrentHP >= mPhaseBoundary)
         {
             //next phase

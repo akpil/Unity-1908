@@ -29,9 +29,13 @@ public class MainUIController : MonoBehaviour
         
     }
 
-    public void ShowProgress(float progress)
+    public void ShowProgress(double current, double max)
     {
-        mProgressBar.ShowGaugeBar(progress);
+        //TODO calc Gauge progress float value
+        float progress = (float)(current / max);
+        //hack build Gauge progress string
+        string progressString = progress.ToString("P0");
+        mProgressBar.ShowGaugeBar(progress, progressString);
     }
 
     public void MoveWindow(int id)
