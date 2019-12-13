@@ -7,6 +7,13 @@ public class GameController : MonoBehaviour
     public static GameController Instance;
 
     private double mGold;
+    public double Gold {
+        get { return mGold; }
+        set
+        {
+            mGold = value;
+        }
+    }
     private int mStage;
     [SerializeField]
     private GemController mGem;

@@ -7,16 +7,25 @@ public class Colleague : MonoBehaviour
     private Rigidbody2D mRB2D;
     [SerializeField]
     private float mSpeed;
+    [SerializeField]
+    private Transform mEffectPos;
     private Animator mAnim;
+
+    private string mName;
+    private int mID;
+
     private void Awake()
     {
         mRB2D = GetComponent<Rigidbody2D>();
         mAnim = GetComponent<Animator>();
     }
     // Start is called before the first frame update
-    void Start()
+    public void Init(string Name, int id, float period)
     {
-        
+        mName = Name;
+        mID = id;
+        StartCoroutine(Movement());
+        StartCoroutine(Function(period));
     }
 
     private IEnumerator Movement()
@@ -56,7 +65,9 @@ public class Colleague : MonoBehaviour
         while(true)
         {
             yield return term;
-            // run special function
+            ColleagueController.Instance.JobFinish(mID);
+
+            Debug.LogFormat("{0}({1}) fnish job cureent time is {2}", mName, mID, Time.time);
         }
     }
 }
