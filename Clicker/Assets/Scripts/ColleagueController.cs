@@ -8,8 +8,19 @@ public class ColleagueController : MonoBehaviour
     private ColleagueData[] mDataArr;
     [SerializeField]
     private Colleague[] mPrefabArr;
+    private List<Colleague> mSpawnedList;
     [SerializeField]
     private Transform mSpawnPos;
+
+    [SerializeField]
+    private Sprite[] mIconArr;
+
+    [SerializeField]
+    private UIElement mElementPrefab;
+    [SerializeField]
+    private Transform mScrollTarget;
+    
+    private List<UIElement> mElementList;
     private void Awake()
     {
         if(Instance == null)
@@ -24,32 +35,45 @@ public class ColleagueController : MonoBehaviour
         mDataArr[0] = new ColleagueData();
         mDataArr[0].Name = "No.1";
         mDataArr[0].Level = 0;
-        mDataArr[0].Contents = "{0}초 마다 {1}골드를 획득합니다.";
+        mDataArr[0].Contents = "<color=#ff0000ff>{1}초</color> 마다 <color=#0000ffff>{0}골드</color>를 획득합니다.";
         mDataArr[0].JobTime = 1.1f;
         mDataArr[0].JobType = eJobType.Touch;
+        mDataArr[0].ValueCurrent = 1;
         mDataArr[0].CostCurrent = 100;
 
         mDataArr[1] = new ColleagueData();
         mDataArr[1].Name = "No.2";
         mDataArr[1].Level = 0;
-        mDataArr[1].Contents = "{0}초 마다 한번씩 터치를 해줍니다.";
+        mDataArr[1].Contents = "<color=#ff0000ff>{1}초</color> 마다 한번씩 터치를 해줍니다.";
         mDataArr[1].JobTime = 1f;
         mDataArr[1].JobType = eJobType.Touch;
+        mDataArr[1].ValueCurrent = 0;
         mDataArr[1].CostCurrent = 200;
 
         mDataArr[2] = new ColleagueData();
         mDataArr[2].Name = "No.3";
         mDataArr[2].Level = 0;
-        mDataArr[2].Contents = "{0}초 마다 {1}골드를 획득합니다.";
+        mDataArr[2].Contents = "<color=#ff0000ff>{1}초</color> 마다 <color=#0000ffff>{0}골드</color>를 획득합니다.";
         mDataArr[2].JobTime = 1.5f;
         mDataArr[2].JobType = eJobType.Gold;
+        mDataArr[2].ValueCurrent = 1;
         mDataArr[2].CostCurrent = 300;
     }
     // Start is called before the first frame update
     void Start()
     {
-        UIElement a = new UIElement();
-        a.Init(AddLevel);
+        mElementList = new List<UIElement>();
+        mSpawnedList = new List<Colleague>();
+        for (int i =0; i < mDataArr.Length; i++)
+        {
+            UIElement elem = Instantiate(mElementPrefab, mScrollTarget);
+            elem.Init(null, i, mDataArr[i].Name, mDataArr[i].Contents, "구매",
+                      mDataArr[i].Level, mDataArr[i].ValueCurrent,
+                      mDataArr[i].CostCurrent, mDataArr[i].JobTime,
+                      AddLevel);
+            mElementList.Add(elem);
+        }
+        
     }
     public void JobFinish(int id)
     {
@@ -57,7 +81,7 @@ public class ColleagueController : MonoBehaviour
         switch(data.JobType)
         {
             case eJobType.Gold:
-                GameController.Instance.Gold += 1;
+                GameController.Instance.Gold += data.ValueCurrent;
                 break;
             case eJobType.Touch:
                 GameController.Instance.Touch();
@@ -68,16 +92,20 @@ public class ColleagueController : MonoBehaviour
         }
     }
 
-    public void TempInstantiate(int id)
-    {
-        AddLevel(id, 1);
-    }
-
     public void AddLevel(int id, int amount)
     {
-        Colleague newCol = Instantiate(mPrefabArr[id]);
-        newCol.transform.position = mSpawnPos.position;
-        newCol.Init(mDataArr[id].Name, id, mDataArr[id].JobTime);
+        if(mDataArr[id].Level == 0)
+        {
+            Colleague newCol = Instantiate(mPrefabArr[id]);
+            newCol.transform.position = mSpawnPos.position;
+            newCol.Init(id, mDataArr[id].JobTime);
+            mSpawnedList.Add(newCol);
+        }
+        mDataArr[id].Level += amount;
+        mDataArr[id].ValueCurrent += mDataArr[id].Level;
+        mDataArr[id].CostCurrent += mDataArr[id].Level;
+        mElementList[id].Renew(mDataArr[id].Contents, "구매", mDataArr[id].Level,
+                               mDataArr[id].ValueCurrent, mDataArr[id].CostCurrent, mDataArr[id].JobTime);
     }
 }
 public class ColleagueData
@@ -87,6 +115,7 @@ public class ColleagueData
     public string Contents;
     public float JobTime;
     public eJobType JobType;
+    public double ValueCurrent;
     public double CostCurrent;
 }
 public enum eJobType

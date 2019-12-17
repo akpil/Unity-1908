@@ -13,15 +13,22 @@ public class UIElement : MonoBehaviour
     private Button mPurchaseButton;
     private int mID;
 
-    public void Init(string name, string contents, string purchaseText,
+    public void Init(Sprite icon, int id, string name,
+                     string contents, string purchaseText,
                      int level, double value, double cost, double time,
                      AnimHash.TwoIntPramCallback callback)
     {
+        mIcon.sprite = icon;
+        mID = id;
+        mNameText.text = name;
         mPurchaseButton.onClick.AddListener(()=> { callback(mID, 1); });
-        //m10UP.onClick.AddListener(() => { callback(mID, 10); });
+        Renew(contents, purchaseText, level, value, cost, time);
     }
     public void Renew(string contents, string purchaseText, int level, double value, double cost,double time)
     {
-        mContentsText.text = string.Format(contents, time.ToString("N1"), value.ToString());
+        mContentsText.text = string.Format(contents, value.ToString(),
+                                                     time.ToString("N1"));
+        mCostText.text = cost.ToString("N0");
+        mPurchaseText.text = purchaseText;
     }
 }
