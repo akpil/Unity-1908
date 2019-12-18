@@ -26,9 +26,10 @@ public class UIElement : MonoBehaviour
     }
     public void Renew(string contents, string purchaseText, int level, double value, double cost,double time)
     {
-        mContentsText.text = string.Format(contents, value.ToString(),
+        mLevelText.text = "LV. " + level.ToString();
+        mContentsText.text = string.Format(contents, UnitBuilder.GetUnitStr(value),
                                                      time.ToString("N1"));
-        mCostText.text = cost.ToString("N0");
+        mCostText.text = UnitBuilder.GetUnitStr(cost);
         mPurchaseText.text = purchaseText;
     }
 }
