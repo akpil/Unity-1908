@@ -6,13 +6,43 @@ public class GameController : MonoBehaviour
 {
     public static GameController Instance;
 
+    public AnimHash.VoidCallback GoldConsumeCallback
+    { get; set; }
     private double mGold;
     public double Gold {
         get { return mGold; }
         set
         {
-            mGold = value;
+            if (value >= 0)
+            {
+                if(mGold > value)
+                {
+                    GoldConsumeCallback?.Invoke();
+                    GoldConsumeCallback = null;
+                }
+                mGold = value;
+                MainUIController.Instance.ShowGold(mGold);
+                // UI show gold
+            }
+            else
+            {
+                //돈이 부족함
+                Debug.Log("Not enough gold");
+            }
         }
+    }
+    public double GetGGold()
+    {
+        return mGold;
+    }
+    public void SetGGold(double value)
+    {
+        if(mGold > value)
+        {
+            //consumed
+
+        }
+        mGold = value;
     }
     private int mStage;
     [SerializeField]
@@ -32,6 +62,7 @@ public class GameController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        MainUIController.Instance.ShowGold(0);
         int id = Random.Range(0, GemController.MAX_GEM_COUNT);
         mGem.GetNewGem(id);
     }

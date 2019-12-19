@@ -105,9 +105,39 @@ public class ColleagueController : MonoBehaviour
         }
     }
 
+    private int mCurrentId, mCurrentAmount;
     public void AddLevel(int id, int amount)
     {
-        if(mDataArr[id].Level == 0)
+        //mCurrentId = id;
+        //mCurrentAmount = amount;
+        //GameController.Instance.GoldConsumeCallback = ApplyLevel;
+        GameController.Instance.GoldConsumeCallback = () => { ApplyLevel2(id, amount); };
+        //GameController.Instance.GoldConsumeCallback = () =>
+        // {
+        //     if (mDataArr[id].Level == 0)
+        //     {
+        //         Colleague newCol = Instantiate(mPrefabArr[id]);
+        //         newCol.transform.position = mSpawnPos.position;
+        //         newCol.Init(id, mDataArr[id].JobTime);
+        //         mSpawnedList.Add(newCol);
+        //     }
+        //     mDataArr[id].Level += amount;
+        //     mDataArr[id].ValueCurrent = mDataArr[id].ValueBase * Math.Pow(mDataArr[id].ValueWeight, mDataArr[id].Level);
+        //     mDataArr[id].CostCurrent = mDataArr[id].CostBase * Math.Pow(mDataArr[id].CostWeight, mDataArr[id].Level);
+        //     mElementList[id].Renew(mDataArr[id].Contents, "구매", mDataArr[id].Level,
+        //                            mDataArr[id].ValueCurrent, mDataArr[id].CostCurrent, mDataArr[id].JobTime);
+        // };
+        GameController.Instance.Gold -= mDataArr[id].CostCurrent;
+
+        
+    }
+    public void ApplyLevel()
+    {
+       
+    }
+    public void ApplyLevel2(int id, int amount)
+    {
+        if (mDataArr[id].Level == 0)
         {
             Colleague newCol = Instantiate(mPrefabArr[id]);
             newCol.transform.position = mSpawnPos.position;

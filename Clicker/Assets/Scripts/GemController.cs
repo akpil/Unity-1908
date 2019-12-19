@@ -43,6 +43,7 @@ public class GemController : MonoBehaviour
             {
                 //Clear
                 //GameController.Instance.NextStage();
+                GameController.Instance.Gold += 300;
                 return true;
             }
             mGem.sprite = mGemSprite[mStartIndex + mCurrentPhase];
