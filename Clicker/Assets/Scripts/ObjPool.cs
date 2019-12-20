@@ -5,8 +5,8 @@ using UnityEngine;
 public class ObjPool<T> : MonoBehaviour where T : Component
 {
     [SerializeField]
-    private T[] mOriginArr;
-    private List<T>[] mPool;
+    protected T[] mOriginArr;
+    protected List<T>[] mPool;
 
     protected void PoolSetup()
     {
