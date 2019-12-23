@@ -838,6 +838,7 @@ Transform:
   - {fileID: 1073829297}
   - {fileID: 628944255}
   - {fileID: 635673125}
+  - {fileID: 673211599}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -1758,6 +1759,155 @@ MonoBehaviour:
   m_EffectColor: {r: 0, g: 0, b: 0, a: 0.5}
   m_EffectDistance: {x: 1, y: -1}
   m_UseGraphicAlpha: 1
+--- !u!1 &673211598
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 673211599}
+  - component: {fileID: 673211600}
+  m_Layer: 0
+  m_Name: GameObject
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &673211599
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 673211598}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 308121959}
+  m_RootOrder: 4
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &673211600
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 673211598}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5d1109eeab6a1f9489baa50073160f8a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  mInfos:
+  - ID: 0
+    Name: "\uC870\uAC01\uC220 \uAD11\uD654"
+    Contents: "\uD130\uCE58\uB2F9 {0}\uD3EC\uC778\uD2B8\uB9CC\uD07C \uC870\uAC01"
+    IconID: 0
+    Level: 1
+    ValueType: 0
+    ValueCurrent: 1
+    ValueWeight: 1.03
+    ValueBase: 1
+    CoolTime: 0
+    CoolTimeCurrent: 0
+    Duration: 0
+    CostCurrent: 10
+    CostWeight: 1.08
+    CostBase: 10
+  - ID: 1
+    Name: "\uC5F0\uC18D\uC870\uAC01"
+    Contents: "{1}\uCD08\uB3D9\uC548 {0}\uD68C \uCD94\uAC00 \uC870\uAC01"
+    IconID: 1
+    Level: 0
+    ValueType: 1
+    ValueCurrent: 0
+    ValueWeight: 0.2
+    ValueBase: 1
+    CoolTime: 300
+    CoolTimeCurrent: 0
+    Duration: 30
+    CostCurrent: 50
+    CostWeight: 1.1
+    CostBase: 50
+  - ID: 2
+    Name: "\uC5B4\uC11C \uC77C\uD574\uB77C"
+    Contents: "\uB3D9\uB8CC\uC5D0\uAC8C \uC989\uC2DC{0}\uD68C \uAC15\uC81C \uC791\uC5C5\uC644\uC218"
+    IconID: 2
+    Level: 0
+    ValueType: 0
+    ValueCurrent: 0
+    ValueWeight: 0.2
+    ValueBase: 1
+    CoolTime: 600
+    CoolTimeCurrent: 0
+    Duration: 0
+    CostCurrent: 100
+    CostWeight: 1.1
+    CostBase: 100
+  - ID: 3
+    Name: "\uD06C\uB9AC\uD2F0\uCEEC \uD655\uB960 \uC99D\uAC00"
+    Contents: "\uD06C\uB9AC\uD2F0\uCEEC \uD655\uB960\uC774 {0}\uC785\uB2C8\uB2E4."
+    IconID: 3
+    Level: 0
+    ValueType: 2
+    ValueCurrent: 0
+    ValueWeight: 0.02
+    ValueBase: 0.01
+    CoolTime: 0
+    CoolTimeCurrent: 0
+    Duration: 0
+    CostCurrent: 100
+    CostWeight: 1.1
+    CostBase: 100
+  - ID: 4
+    Name: "\uD06C\uB9AC\uD2F0\uCEEC \uD3EC\uC778\uD2B8 \uC99D\uAC00"
+    Contents: "\uD06C\uB9AC\uD2F0\uCEEC\uC2DC \uD3EC\uC778\uD2B8\uAC00 {0}\uB354 \uC624\uB985\uB2C8\uB2E4."
+    IconID: 4
+    Level: 0
+    ValueType: 2
+    ValueCurrent: 0
+    ValueWeight: 0.1
+    ValueBase: 0.2
+    CoolTime: 0
+    CoolTimeCurrent: 0
+    Duration: 0
+    CostCurrent: 100
+    CostWeight: 1.1
+    CostBase: 100
+  - ID: 5
+    Name: "\uC218\uC804\uB178"
+    Contents: "\uC791\uC5C5\uC644\uB8CC \uBCF4\uC0C1\uAE08 {0}\uCD94\uAC00 \uD68D\uB4DD\uD569\uB2C8\uB2E4."
+    IconID: 5
+    Level: 0
+    ValueType: 2
+    ValueCurrent: 0
+    ValueWeight: 0.1
+    ValueBase: 0.15
+    CoolTime: 0
+    CoolTimeCurrent: 0
+    Duration: 0
+    CostCurrent: 200
+    CostWeight: 1.1
+    CostBase: 200
+  - ID: 6
+    Name: "\uCD08\uBC8C\uC791\uC5C5"
+    Contents: "\uC791\uC5C5 \uBAA9\uD45C \uD3EC\uC778\uD2B8\uB97C{0}\uB0AE\uCDA5\uB2C8\uB2E4."
+    IconID: 6
+    Level: 0
+    ValueType: 2
+    ValueCurrent: 0
+    ValueWeight: 0.05
+    ValueBase: 0.1
+    CoolTime: 0
+    CoolTimeCurrent: 0
+    Duration: 0
+    CostCurrent: 400
+    CostWeight: 1.4
+    CostBase: 400
 --- !u!1 &696032975
 GameObject:
   m_ObjectHideFlags: 0
@@ -2648,12 +2798,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: de3514f788590614880f16c556ccf180, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  mDataArr: []
   mPrefabArr:
   - {fileID: 4582105210306244368, guid: 4ad0bb20987571f43a81f3790ef6dd06, type: 3}
   - {fileID: 8484023689139101052, guid: 52a0d1598d09da546bb3ed41f80ecdce, type: 3}
   - {fileID: 3629125374179519374, guid: 22a201a2955c91d45aabbf4800833bb4, type: 3}
   mSpawnPos: {fileID: 496043250}
-  mIconArr: []
+  mIconArr:
+  - {fileID: 21300002, guid: f305e9f760f873e40b1e09471443679c, type: 3}
+  - {fileID: 21300002, guid: 72d154b0e199dff49a76cfcfabb2d3ef, type: 3}
+  - {fileID: 21300002, guid: ebd33d75239d6574dab5afaad9e43f55, type: 3}
   mElementPrefab: {fileID: 4443303782454719329, guid: 5c191177a2891bf4fa161a0b19abf13d,
     type: 3}
   mScrollTarget: {fileID: 1995952126}

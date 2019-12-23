@@ -6,6 +6,7 @@ using UnityEngine;
 public class ColleagueController : MonoBehaviour
 {
     public static ColleagueController Instance;
+    [SerializeField]
     private ColleagueData[] mDataArr;
     [SerializeField]
     private Colleague[] mPrefabArr;
@@ -83,7 +84,7 @@ public class ColleagueController : MonoBehaviour
         for (int i =0; i < mDataArr.Length; i++)
         {
             UIElement elem = Instantiate(mElementPrefab, mScrollTarget);
-            elem.Init(null, i, mDataArr[i].Name, mDataArr[i].Contents, "구매",
+            elem.Init(mIconArr[i], i, mDataArr[i].Name, mDataArr[i].Contents, "구매",
                       mDataArr[i].Level, mDataArr[i].ValueCurrent,
                       mDataArr[i].CostCurrent, mDataArr[i].JobTime,
                       AddLevel);
@@ -157,6 +158,7 @@ public class ColleagueController : MonoBehaviour
                                mDataArr[id].ValueCurrent, mDataArr[id].CostCurrent, mDataArr[id].JobTime);
     }
 }
+[Serializable]
 public class ColleagueData
 {
     public string Name;
