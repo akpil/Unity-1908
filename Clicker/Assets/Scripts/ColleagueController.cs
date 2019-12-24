@@ -21,11 +21,11 @@ public class ColleagueController : MonoBehaviour
     private UIElement mElementPrefab;
     [SerializeField]
     private Transform mScrollTarget;
+    private List<UIElement> mElementList;
 
     [SerializeField]
     private TextEffectPool mTextEffectPool;
 
-    private List<UIElement> mElementList;
     private void Awake()
     {
         if(Instance == null)
