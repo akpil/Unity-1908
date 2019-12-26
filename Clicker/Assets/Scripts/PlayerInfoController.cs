@@ -8,7 +8,7 @@ public class PlayerInfoController : MonoBehaviour
     public static PlayerInfoController Instance;
     [SerializeField]
     private PlayerInfo[] mInfos;
-
+    public PlayerInfo[] Infos { get { return mInfos; } }
     [SerializeField]
     private UIElement mElementPrefab;
     [SerializeField]

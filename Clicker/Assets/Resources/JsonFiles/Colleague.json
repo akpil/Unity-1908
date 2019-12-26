@@ -1,0 +1,41 @@
+[
+  {
+    "Name": "No.1",
+    "Level": 0,
+    "Contents": "<color=#ff0000ff>{1}초</color> 마다 <color=#0000ffff>{0}골드</color>를 획득합니다.",
+    "JobTime": 1.1,
+    "JobType": "Gold",
+    "ValueCurrent": 1.0,
+    "ValueWeight": 1.08,
+    "ValueBase": 1.0,
+    "CostCurrent": 100.0,
+    "CostWeight": 1.2,
+    "CostBase": 100.0
+  },
+  {
+    "Name": "No.2",
+    "Level": 0,
+    "Contents": "<color=#ff0000ff>{1}초</color> 마다 한번씩 터치를 해줍니다.",
+    "JobTime": 1.0,
+    "JobType": "Touch",
+    "ValueCurrent": 0.0,
+    "ValueWeight": 1.08,
+    "ValueBase": 1.0,
+    "CostCurrent": 200.0,
+    "CostWeight": 1.2,
+    "CostBase": 200.0
+  },
+  {
+    "Name": "No.3",
+    "Level": 0,
+    "Contents": "<color=#ff0000ff>{1}초</color> 마다 <color=#0000ffff>{0}골드</color>를 획득합니다.",
+    "JobTime": 1.5,
+    "JobType": 0,
+    "ValueCurrent": 2.0,
+    "ValueWeight": 1.1,
+    "ValueBase": 2.0,
+    "CostCurrent": 300.0,
+    "CostWeight": 1.2,
+    "CostBase": 300.0
+  }
+]
