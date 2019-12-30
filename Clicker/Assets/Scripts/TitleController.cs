@@ -6,11 +6,13 @@ using UnityEngine.SceneManagement;
 
 public class TitleController : MonoBehaviour
 {
+#pragma warning disable 0649
     [SerializeField]
     private Button mStartButton;
     [SerializeField]
     private Text mStatusText;
     ObjPool<Transform> mTransform;
+#pragma warning restore
     // Start is called before the first frame update
     void Start()
     {

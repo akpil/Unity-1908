@@ -3,9 +3,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerInfoController : MonoBehaviour
+public class PlayerInfoController : DataLoader
 {
     public static PlayerInfoController Instance;
+#pragma warning disable 0649
     [SerializeField]
     private PlayerInfo[] mInfos;
     public PlayerInfo[] Infos { get { return mInfos; } }
@@ -14,7 +15,19 @@ public class PlayerInfoController : MonoBehaviour
     [SerializeField]
     private Transform mScrollTarget;
     private List<UIElement> mElementList;
-
+#pragma warning restore
+    public int[] LevelArr
+    {
+        get
+        {
+            int[] arr = new int[mInfos.Length];
+            for(int i = 0; i < arr.Length; i++)
+            {
+                arr[i] = mInfos[i].Level;
+            }
+            return arr;
+        }
+    }
     private void Awake()
     {
         if(Instance == null)
@@ -25,7 +38,8 @@ public class PlayerInfoController : MonoBehaviour
         {
             Destroy(gameObject);
         }
-        
+        Debug.Log("sdfsdfs");
+        LoadJsonData(out mInfos, StaticValues.PLAYER_DATA_PATH);
     }
     // Start is called before the first frame update
     void Start()

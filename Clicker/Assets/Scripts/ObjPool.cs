@@ -4,8 +4,10 @@ using UnityEngine;
 
 public class ObjPool<T> : MonoBehaviour where T : Component
 {
+#pragma warning disable 0649
     [SerializeField]
     protected T[] mOriginArr;
+#pragma warning restore
     protected List<T>[] mPool;
 
     protected void PoolSetup()

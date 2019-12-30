@@ -5,12 +5,13 @@ using UnityEngine;
 public class Colleague : MonoBehaviour
 {
     private Rigidbody2D mRB2D;
+#pragma warning disable 0649
     [SerializeField]
     private float mSpeed;
     [SerializeField]
     private Transform mEffectPos;
     private Animator mAnim;
-
+#pragma warning restore
     private int mID;
 
     private void Awake()
@@ -45,12 +46,12 @@ public class Colleague : MonoBehaviour
             if(moveOrStay == 0)
             {
                 mRB2D.velocity = Vector2.zero;
-                mAnim.SetBool(AnimHash.Move, false);
+                mAnim.SetBool(StaticValues.Move, false);
             }
             else
             {
                 mRB2D.velocity = transform.right * -mSpeed;
-                mAnim.SetBool(AnimHash.Move, true);
+                mAnim.SetBool(StaticValues.Move, true);
             }
 
             yield return moveTime;

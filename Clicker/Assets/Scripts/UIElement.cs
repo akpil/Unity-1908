@@ -5,18 +5,20 @@ using UnityEngine.UI;
 
 public class UIElement : MonoBehaviour
 {
+#pragma warning disable 0649
     [SerializeField]
     private Image mIcon;
     [SerializeField]
     private Text mNameText, mLevelText, mContentsText, mPurchaseText, mCostText;
     [SerializeField]
     private Button mPurchaseButton;
+#pragma warning restore
     private int mID;
 
     public void Init(Sprite icon, int id, string name,
                      string contents, string purchaseText,
                      int level, double value, double cost, double time,
-                     AnimHash.TwoIntPramCallback callback, eValueType valueType = eValueType.Expo)
+                     StaticValues.TwoIntPramCallback callback, eValueType valueType = eValueType.Expo)
     {
         mIcon.sprite = icon;
         mID = id;

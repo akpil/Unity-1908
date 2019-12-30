@@ -6,14 +6,15 @@ using UnityEngine.UI;
 public class MainUIController : MonoBehaviour
 {
     public static MainUIController Instance;
-    private static int mUIMoveHash = Animator.StringToHash("Move");
+#pragma warning disable 0649
     [SerializeField]
     private Animator[] mWindowAnims;
     [SerializeField]
     private GaugeBar mProgressBar;
     [SerializeField]
     private Text mGoldText;
-    
+#pragma warning restore
+
     private void Awake()
     {
         if(Instance == null)
@@ -51,6 +52,6 @@ public class MainUIController : MonoBehaviour
 
     public void MoveWindow(int id)
     {
-        mWindowAnims[id].SetTrigger(mUIMoveHash);
+        mWindowAnims[id].SetTrigger(StaticValues.UIMove);
     }
 }

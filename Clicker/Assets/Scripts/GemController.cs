@@ -6,6 +6,7 @@ using UnityEngine;
 public class GemController : MonoBehaviour
 {
     public const int MAX_GEM_COUNT = 3;
+#pragma warning disable 0649
     [SerializeField]
     private EffectPool mEffectPool;
     [SerializeField]
@@ -18,11 +19,31 @@ public class GemController : MonoBehaviour
     private float mHPBase = 10, mHPWeight = 1.4f,
                   mRewardBase = 10, mRewardWeight = 1.5f;
     private double mCurrentHP, mMaxHP, mPhaseBoundary;
+    public double CurrentHP { get { return mCurrentHP; } }
     private int mCurrentPhase, mStartIndex;
+#pragma warning restore
     // Start is called before the first frame update
     void Awake()
     {
         mGemSprite = Resources.LoadAll<Sprite>("Gem");
+    }
+
+    public void LoadGem(int lastGemID, double currentHP)
+    {
+        mStartIndex = lastGemID * mSheetCount;
+        mCurrentHP = currentHP;
+        mMaxHP = mHPBase * Math.Pow(mHPWeight, GameController.Instance.StageNumber);
+        
+        MainUIController.Instance.ShowProgress(mCurrentHP, mMaxHP);
+
+        mCurrentPhase = 0;
+        while(mCurrentHP >= mPhaseBoundary)
+        {
+            mCurrentPhase++;
+            mPhaseBoundary = mMaxHP * 0.2f * (mCurrentPhase + 1);
+        }
+        
+        mGem.sprite = mGemSprite[mStartIndex + mCurrentPhase];
     }
 
     public void GetNewGem(int id)

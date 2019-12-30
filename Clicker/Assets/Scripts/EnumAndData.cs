@@ -17,3 +17,14 @@ public enum eValueType
     Numeric,
     Percent
 }
+
+[Serializable]
+public class PlayerSaveData
+{
+    public int Stage;
+    public int GemID;
+    public double Gold;
+    public double GemHP;
+    public int[] PlayerLevels;
+    public int[] ColleagueLevels;
+}

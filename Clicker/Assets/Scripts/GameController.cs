@@ -1,28 +1,31 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.IO;
+using System.Runtime.Serialization.Formatters.Binary;
 using UnityEngine;
 
 public class GameController : MonoBehaviour
 {
     public static GameController Instance;
-
-    public AnimHash.VoidCallback GoldConsumeCallback
-    { get; set; }
     [SerializeField]
-    private double mGold;
+    private PlayerSaveData mPlayer;
+
+    public StaticValues.VoidCallback GoldConsumeCallback
+    { get; set; }
     public double Gold {
-        get { return mGold; }
+        get { return mPlayer.Gold; }
         set
         {
             if (value >= 0)
             {
-                if(mGold > value)
+                if(mPlayer.Gold > value)
                 {
                     GoldConsumeCallback?.Invoke();
                     GoldConsumeCallback = null;
                 }
-                mGold = value;
-                MainUIController.Instance.ShowGold(mGold);
+                mPlayer.Gold = value;
+                MainUIController.Instance.ShowGold(mPlayer.Gold);
                 // UI show gold
             }
             else
@@ -46,13 +49,14 @@ public class GameController : MonoBehaviour
     //    mGold = value;
     //}
 
-    private int mStage;
     public int StageNumber
     {
-        get { return mStage; }
+        get { return mPlayer.Stage; }
     }
+#pragma warning disable 0649
     [SerializeField]
     private GemController mGem;
+#pragma warning restore
 
     public double TouchPower
     {
@@ -75,24 +79,68 @@ public class GameController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        MainUIController.Instance.ShowGold(0);
-        int id = Random.Range(0, GemController.MAX_GEM_COUNT);
-        mGem.GetNewGem(id);
+        MainUIController.Instance.ShowGold(mPlayer.Gold);
+        Load();
+        mGem.LoadGem(mPlayer.GemID, mPlayer.GemHP);
+        //mPlayer.GemID = UnityEngine.Random.Range(0, GemController.MAX_GEM_COUNT);
+        //mGem.GetNewGem(mPlayer.GemID);
     }
 
     public void Touch()
     {
         if(mGem.AddProgress(mTouchPower))
         {
-            mStage++;
-            int id = Random.Range(0, GemController.MAX_GEM_COUNT);
-            mGem.GetNewGem(id);
+            mPlayer.Stage++;
+            mPlayer.GemID = UnityEngine.Random.Range(0, GemController.MAX_GEM_COUNT);
+            mGem.GetNewGem(mPlayer.GemID);
+        }
+    }
+
+    public void Save()
+    {
+        mPlayer.GemHP = mGem.CurrentHP;
+        mPlayer.PlayerLevels = PlayerInfoController.Instance.LevelArr;
+        mPlayer.ColleagueLevels = ColleagueController.Instance.LevelArr;
+
+        BinaryFormatter formatter = new BinaryFormatter();
+        MemoryStream stream = new MemoryStream();
+
+        formatter.Serialize(stream, mPlayer);
+
+        string data = Convert.ToBase64String(stream.GetBuffer());
+        Debug.Log(data);
+        PlayerPrefs.SetString("Player", data);
+        stream.Close();
+    }
+    public void Load()
+    {
+        string data = PlayerPrefs.GetString("Player");
+        if (!string.IsNullOrEmpty(data))
+        {
+            Debug.Log(data);
+            BinaryFormatter formatter = new BinaryFormatter();
+            MemoryStream stream = new MemoryStream(Convert.FromBase64String(data));
+
+            mPlayer = (PlayerSaveData)formatter.Deserialize(stream);
+            stream.Close();
+        }
+        else
+        {
+
         }
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+        if(Input.GetKeyDown(KeyCode.Q))
+        {
+            Save();
+        }
+        if(Input.GetKeyDown(KeyCode.W))
+        {
+            Load();
+            mGem.LoadGem(mPlayer.GemID, mPlayer.GemHP);
+        }
     }
 }

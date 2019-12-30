@@ -4,11 +4,12 @@ using UnityEngine;
 
 public class TouchManager : MonoBehaviour
 {
+#pragma warning disable 0649
     [SerializeField]
     private Camera mTouchCamera;
     [SerializeField]
     private EffectPool mEffectPool;
- 
+#pragma warning restore
     public Ray GenerateRay(Vector3 screenPos)
     {
         Vector3 nearPlane = mTouchCamera.ScreenToWorldPoint(
