@@ -115,7 +115,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   mSpeed: 1
-  mEffectPos: {fileID: 0}
+  mEffectPos: {fileID: 4387423049455116930}
 --- !u!1 &3629125374486211345
 GameObject:
   m_ObjectHideFlags: 0
