@@ -21,6 +21,20 @@ public class GemController : MonoBehaviour
     private double mCurrentHP, mMaxHP, mPhaseBoundary;
     public double CurrentHP { get { return mCurrentHP; } }
     private int mCurrentPhase, mStartIndex;
+
+    private double mIncomeBonusWeight;
+    public double IncomeBonusWeight
+    {
+        get { return mIncomeBonusWeight; }
+        set { mIncomeBonusWeight = value; }
+    }
+
+    private double mMaxHPWeight;
+    public double MaxHPWeight
+    {
+        get { return mMaxHPWeight; }
+        set { mMaxHPWeight = value; }
+    }
 #pragma warning restore
     // Start is called before the first frame update
     void Awake()
@@ -52,7 +66,8 @@ public class GemController : MonoBehaviour
         mGem.sprite = mGemSprite[mStartIndex];
         mCurrentPhase = 0;
         mCurrentHP = 0;
-        mMaxHP = mHPBase * Math.Pow(mHPWeight, GameController.Instance.StageNumber);
+        mMaxHP = mHPBase * Math.Pow(mHPWeight, GameController.Instance.StageNumber)*
+                 (1 - mMaxHPWeight);
         mPhaseBoundary = mMaxHP * 0.2f * (mCurrentPhase + 1);
         MainUIController.Instance.ShowProgress(mCurrentHP, mMaxHP);
     }
@@ -71,7 +86,8 @@ public class GemController : MonoBehaviour
                 //Clear
                 //GameController.Instance.NextStage();
                 GameController.Instance.Gold += mRewardBase * 
-                            Math.Pow(mRewardWeight, GameController.Instance.StageNumber);
+                            Math.Pow(mRewardWeight, GameController.Instance.StageNumber) *
+                            (1 + mIncomeBonusWeight);
                 return true;
             }
             Timer effect = mEffectPool.GetFromPool((int)eEffectType.PhaseShift);

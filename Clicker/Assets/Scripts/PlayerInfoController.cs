@@ -118,6 +118,18 @@ public class PlayerInfoController : DataLoader
         {
             GameController.Instance.CriticalValue = (float)mInfos[id].ValueCurrent;
         }
+        else if (id == 5)
+        {
+            GameController.Instance.IncomeBonusWeight = (float)mInfos[id].ValueCurrent;
+        }
+        else if (id == 6)
+        {
+            GameController.Instance.MaxHPWeight = (float)mInfos[id].ValueCurrent;
+        }
+        else
+        {
+            Debug.LogError("Wrong item id: " + id);
+        }
     }
 
     // Update is called once per frame
