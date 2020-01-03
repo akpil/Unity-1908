@@ -18,6 +18,8 @@ public class PlayerInfoController : DataLoader
 
     private bool mbLoaded;
     public bool bLoaded { get { return mbLoaded; } }
+    [SerializeField]
+    private SkillButton[] mSkillArr;
 #pragma warning restore
     public int[] LevelArr
     {
@@ -132,10 +134,24 @@ public class PlayerInfoController : DataLoader
         }
     }
 
-    // Update is called once per frame
-    void Update()
+    
+    public void ActiveSkill(int id)
     {
-        
+        StartCoroutine(CooltimeWorks(id));
+    }
+
+    private IEnumerator CooltimeWorks(int id)
+    {
+        WaitForFixedUpdate fixedUpdate = new WaitForFixedUpdate();
+        Infos[id].CoolTimeCurrent = Infos[id].CoolTime;
+        mSkillArr[id - 1].SetVisible(true);
+        while (Infos[id].CoolTimeCurrent > 0)
+        {
+            Infos[id].CoolTimeCurrent -= Time.fixedDeltaTime;
+            mSkillArr[id - 1].ShowCoolTime(Infos[id].CoolTime, Infos[id].CoolTimeCurrent);
+            yield return fixedUpdate;
+        }
+        mSkillArr[id - 1].SetVisible(false);
     }
 }
 [Serializable]
