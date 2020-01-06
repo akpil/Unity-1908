@@ -87,6 +87,14 @@ public class ColleagueController : DataLoader
         }
     }
 
+    public void ForcedJobFinishAll()
+    {
+        for(int i = 0; i < mSpawnedList.Count; i++)
+        {
+            mSpawnedList[i].ForcedJobFinish();
+        }
+    }
+
     public void JobFinish(int id, Vector3 pos)
     {
         ColleagueData data = mDataArr[id];

@@ -71,12 +71,12 @@ public class JsonGenerator : MonoBehaviour
 
     private void SavePlayer()
     {
-        mPlayerInfos = PlayerInfoController.Instance.Infos;
-        string data = JsonConvert.SerializeObject(mPlayerInfos, Formatting.Indented);
-        Debug.Log(data);
-        StreamWriter writer = new StreamWriter(Application.dataPath + "/Resources/JsonFiles/PlayerInfo.json");
-        writer.Write(data);
-        writer.Close();
+        //mPlayerInfos = PlayerInfoController.Instance.Infos;
+        //string data = JsonConvert.SerializeObject(mPlayerInfos, Formatting.Indented);
+        //Debug.Log(data);
+        //StreamWriter writer = new StreamWriter(Application.dataPath + "/Resources/JsonFiles/PlayerInfo.json");
+        //writer.Write(data);
+        //writer.Close();
     }
 
     private void LoadPlayer()

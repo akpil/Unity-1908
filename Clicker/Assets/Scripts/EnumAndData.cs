@@ -18,6 +18,12 @@ public enum eValueType
     Percent
 }
 
+public enum eSkillID
+{
+    Chain = 1,
+    Overwork
+}
+
 [Serializable]
 public class PlayerSaveData
 {

@@ -27,6 +27,11 @@ public class Colleague : MonoBehaviour
         StartCoroutine(Function(period));
     }
 
+    public void ForcedJobFinish()
+    {
+        ColleagueController.Instance.JobFinish(mID, mEffectPos.position);
+    }
+
     private IEnumerator Movement()
     {
         WaitForSeconds moveTime = new WaitForSeconds(1);

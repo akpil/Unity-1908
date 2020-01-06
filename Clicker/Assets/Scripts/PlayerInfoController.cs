@@ -9,7 +9,6 @@ public class PlayerInfoController : DataLoader
 #pragma warning disable 0649
     [SerializeField]
     private PlayerInfo[] mInfos;
-    public PlayerInfo[] Infos { get { return mInfos; } }
     [SerializeField]
     private UIElement mElementPrefab;
     [SerializeField]
@@ -21,18 +20,22 @@ public class PlayerInfoController : DataLoader
     [SerializeField]
     private SkillButton[] mSkillArr;
 #pragma warning restore
-    public int[] LevelArr
-    {
-        get
-        {
-            int[] arr = new int[mInfos.Length];
-            for(int i = 0; i < arr.Length; i++)
-            {
-                arr[i] = mInfos[i].Level;
-            }
-            return arr;
-        }
-    }
+    [SerializeField]
+    private int[] mLevelArr;
+    [SerializeField]
+    private float[] mCooltimeArr;
+    //public int[] LevelArr
+    //{
+    //    get
+    //    {
+    //        int[] arr = new int[mInfos.Length];
+    //        for(int i = 0; i < arr.Length; i++)
+    //        {
+    //            arr[i] = mInfos[i].Level;
+    //        }
+    //        return arr;
+    //    }
+    //}
     private void Awake()
     {
         if(Instance == null)
@@ -61,8 +64,11 @@ public class PlayerInfoController : DataLoader
         GameController.Instance.TouchPower = mInfos[0].ValueCurrent;
         mbLoaded = true;
     }
-    public void Load(int[] levelArr)
+    
+    public void Load(int[] levelArr, float[] coolTimeArr)
     {
+        mLevelArr = levelArr;
+        mCooltimeArr = coolTimeArr;
         for(int i = 0; i < levelArr.Length; i++)
         {
             mInfos[i].Level = levelArr[i];
@@ -78,6 +84,7 @@ public class PlayerInfoController : DataLoader
     public void ApplyLevelUP(int id, int amount)
     {
         mInfos[id].Level += amount;
+        mLevelArr[id] = mInfos[id].Level;
         CalcAndShowData(id);
         
     }
@@ -134,21 +141,48 @@ public class PlayerInfoController : DataLoader
         }
     }
 
-    
+
     public void ActiveSkill(int id)
     {
         StartCoroutine(CooltimeWorks(id));
+        switch((eSkillID)id)
+        {
+            case eSkillID.Chain:
+                StartCoroutine(ChainFunction());
+                break;
+            case eSkillID.Overwork:
+                int count = (int)Mathf.Ceil((float)mInfos[(int)eSkillID.Overwork].ValueCurrent);
+                for(int i = 0; i < count; i++)
+                {
+                    ColleagueController.Instance.ForcedJobFinishAll();
+                }
+                break;
+        }
     }
+    private IEnumerator ChainFunction()
+    {
+        float duration = mInfos[(int)eSkillID.Chain].Duration;
+        float OPS = mInfos[(int)eSkillID.Chain].Duration / (float)mInfos[(int)eSkillID.Chain].ValueCurrent;
+        WaitForSeconds gap = new WaitForSeconds(OPS);
+
+        while(duration > 0)
+        {
+            duration -= OPS;
+            GameController.Instance.Touch();
+            yield return gap;
+        }
+    }
+
 
     private IEnumerator CooltimeWorks(int id)
     {
         WaitForFixedUpdate fixedUpdate = new WaitForFixedUpdate();
-        Infos[id].CoolTimeCurrent = Infos[id].CoolTime;
+        mCooltimeArr[mInfos[id].CoolTimeIndex] = mInfos[id].CoolTime;
         mSkillArr[id - 1].SetVisible(true);
-        while (Infos[id].CoolTimeCurrent > 0)
+        while (mCooltimeArr[mInfos[id].CoolTimeIndex] > 0)
         {
-            Infos[id].CoolTimeCurrent -= Time.fixedDeltaTime;
-            mSkillArr[id - 1].ShowCoolTime(Infos[id].CoolTime, Infos[id].CoolTimeCurrent);
+            mCooltimeArr[mInfos[id].CoolTimeIndex] -= Time.fixedDeltaTime;
+            mSkillArr[id - 1].ShowCoolTime(mInfos[id].CoolTime, mCooltimeArr[mInfos[id].CoolTimeIndex]);
             yield return fixedUpdate;
         }
         mSkillArr[id - 1].SetVisible(false);
@@ -169,7 +203,7 @@ public class PlayerInfo
     public double ValueBase;
 
     public float CoolTime;
-    public float CoolTimeCurrent;
+    public int CoolTimeIndex;
     public float Duration;
 
     public double CostCurrent;

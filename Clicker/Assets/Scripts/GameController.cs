@@ -155,7 +155,7 @@ public class GameController : MonoBehaviour
     public void Save()
     {
         mPlayer.GemHP = mGem.CurrentHP;
-        mPlayer.PlayerLevels = PlayerInfoController.Instance.LevelArr;
+        //mPlayer.PlayerLevels = PlayerInfoController.Instance.LevelArr;
         mPlayer.ColleagueLevels = ColleagueController.Instance.LevelArr;
 
         BinaryFormatter formatter = new BinaryFormatter();
