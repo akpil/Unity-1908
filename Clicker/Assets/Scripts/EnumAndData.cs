@@ -20,7 +20,7 @@ public enum eValueType
 
 public enum eSkillID
 {
-    Chain = 1,
+    Chain,
     Overwork
 }
 
@@ -30,7 +30,9 @@ public class PlayerSaveData
     public int Stage;
     public int GemID;
     public double Gold;
+    public double Soul;
     public double GemHP;
     public int[] PlayerLevels;
+    public float[] Cooltimes;
     public int[] ColleagueLevels;
 }

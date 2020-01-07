@@ -127,7 +127,7 @@ public class GameController : MonoBehaviour
             mPlayer.GemID = UnityEngine.Random.Range(0, GemController.MAX_GEM_COUNT);
         }
         mGem.LoadGem(mPlayer.GemID, mPlayer.GemHP);
-        PlayerInfoController.Instance.Load(mPlayer.PlayerLevels);
+        PlayerInfoController.Instance.Load(mPlayer.PlayerLevels, mPlayer.Cooltimes);
         ColleagueController.Instance.Load(mPlayer.ColleagueLevels);
     }
 
@@ -152,11 +152,29 @@ public class GameController : MonoBehaviour
         }
     }
 
+    public void Rebirth()
+    {
+        mPlayer.Soul += 10 * mPlayer.Stage;
+
+        mPlayer.Gold = 0;
+        mPlayer.GemID = -1;
+        mPlayer.PlayerLevels = new int[StaticValues.PLAYER_INFOS_LEGNTH];
+        mPlayer.PlayerLevels[0] = 1;
+        mPlayer.Cooltimes = new float[StaticValues.COOLTIME_LENGTH];
+        mPlayer.ColleagueLevels = new int[StaticValues.COLLEAGUE_INFOS_LENGTH];
+        mPlayer.Stage = 0;
+        mPlayer.GemHP = 0;
+
+        PlayerInfoController.Instance.Load(mPlayer.PlayerLevels, mPlayer.Cooltimes);
+        ColleagueController.Instance.Rebirth();
+        ColleagueController.Instance.Load(mPlayer.ColleagueLevels);
+    }
+
     public void Save()
     {
         mPlayer.GemHP = mGem.CurrentHP;
         //mPlayer.PlayerLevels = PlayerInfoController.Instance.LevelArr;
-        mPlayer.ColleagueLevels = ColleagueController.Instance.LevelArr;
+        //mPlayer.ColleagueLevels = ColleagueController.Instance.LevelArr;
 
         BinaryFormatter formatter = new BinaryFormatter();
         MemoryStream stream = new MemoryStream();
@@ -186,13 +204,74 @@ public class GameController : MonoBehaviour
             mPlayer.GemID = -1;
             mPlayer.PlayerLevels = new int[StaticValues.PLAYER_INFOS_LEGNTH];
             mPlayer.PlayerLevels[0] = 1;
+            mPlayer.Cooltimes = new float[StaticValues.COOLTIME_LENGTH];
             mPlayer.ColleagueLevels = new int[StaticValues.COLLEAGUE_INFOS_LENGTH];
         }
+        FixSavedData();
+    }
+
+    private void FixSavedData()
+    {
+        if (mPlayer.PlayerLevels == null)
+        {
+            mPlayer.PlayerLevels = new int[StaticValues.PLAYER_INFOS_LEGNTH];
+        }
+        else if (mPlayer.PlayerLevels.Length < StaticValues.PLAYER_INFOS_LEGNTH)
+        {
+            int[] temp = new int[StaticValues.PLAYER_INFOS_LEGNTH];
+            for(int i =0; i < mPlayer.PlayerLevels.Length; i++)
+            {
+                temp[i] = mPlayer.PlayerLevels[i];
+            }
+            mPlayer.PlayerLevels = temp;
+        }
+
+        if (mPlayer.Cooltimes == null)
+        {
+            mPlayer.Cooltimes = new float[StaticValues.COOLTIME_LENGTH];
+        }
+        else if (mPlayer.Cooltimes.Length < StaticValues.COOLTIME_LENGTH)
+        {
+            float[] temp = new float[StaticValues.COOLTIME_LENGTH];
+            for(int i =0; i < mPlayer.Cooltimes.Length; i++)
+            {
+                temp[i] = mPlayer.Cooltimes[i];
+            }
+            mPlayer.Cooltimes = temp;
+        }
+
+        if(mPlayer.ColleagueLevels == null)
+        {
+            mPlayer.ColleagueLevels = new int[StaticValues.COLLEAGUE_INFOS_LENGTH];
+        }
+        else if(mPlayer.ColleagueLevels.Length < StaticValues.COLLEAGUE_INFOS_LENGTH)
+        {
+            int[] temp = new int[StaticValues.COLLEAGUE_INFOS_LENGTH];
+            for (int i = 0; i < mPlayer.ColleagueLevels.Length; i++)
+            {
+                temp[i] = mPlayer.ColleagueLevels[i];
+            }
+            mPlayer.ColleagueLevels = temp;
+        }
+    }
+
+    private void OnApplicationPause(bool pause)
+    {
+        
+    }
+
+    private void OnApplicationQuit()
+    {
+        Save();
     }
 
     // Update is called once per frame
     void Update()
     {
+        if(Input.GetKeyDown(KeyCode.Escape))
+        {
+            Application.Quit();
+        }
         if(Input.GetKeyDown(KeyCode.Q))
         {
             Save();
@@ -202,5 +281,6 @@ public class GameController : MonoBehaviour
             Load();
             mGem.LoadGem(mPlayer.GemID, mPlayer.GemHP);
         }
+
     }
 }

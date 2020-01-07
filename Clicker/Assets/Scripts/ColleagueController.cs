@@ -29,18 +29,7 @@ public class ColleagueController : DataLoader
     private bool mbLoaded;
     public bool bLoaded { get { return mbLoaded; } }
 #pragma warning restore
-    public int[] LevelArr
-    {
-        get
-        {
-            int[] arr = new int[mDataArr.Length];
-            for(int i = 0;i <arr.Length; i++)
-            {
-                arr[i] = mDataArr[i].Level;
-            }
-            return arr;
-        }
-    }
+    private int[] mLevelArr;
     private void Awake()
     {
         if(Instance == null)
@@ -71,9 +60,18 @@ public class ColleagueController : DataLoader
         mbLoaded = true;
     }
 
+    public void Rebirth()
+    {
+        for (int i = 0; i < mSpawnedList.Count; i++)
+        {
+            Destroy(mSpawnedList[i].gameObject);
+        }
+    }
+
     public void Load(int[] levelArr)
     {
-        for(int i = 0; i < levelArr.Length; i++)
+        mLevelArr = levelArr;
+        for (int i = 0; i < mDataArr.Length; i++)
         {
             mDataArr[i].Level = levelArr[i];
             CalcAndShowData(i);
@@ -155,6 +153,7 @@ public class ColleagueController : DataLoader
             mSpawnedList.Add(newCol);
         }
         mDataArr[id].Level += amount;
+        mLevelArr[id] = mDataArr[id].Level;
         CalcAndShowData(id);
     }
     public void CalcAndShowData(int id)

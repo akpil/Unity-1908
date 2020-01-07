@@ -69,10 +69,14 @@ public class PlayerInfoController : DataLoader
     {
         mLevelArr = levelArr;
         mCooltimeArr = coolTimeArr;
-        for(int i = 0; i < levelArr.Length; i++)
+        for(int i = 0; i < mInfos.Length; i++)
         {
             mInfos[i].Level = levelArr[i];
             CalcAndShowData(i);
+            if(mInfos[i].CoolTimeIndex >=0)
+            {
+                StartCoroutine(CooltimeWorks(i));
+            }
         }
     }
 
@@ -144,8 +148,9 @@ public class PlayerInfoController : DataLoader
 
     public void ActiveSkill(int id)
     {
+        mCooltimeArr[mInfos[id].CoolTimeIndex] = mInfos[id].CoolTime;
         StartCoroutine(CooltimeWorks(id));
-        switch((eSkillID)id)
+        switch((eSkillID)mInfos[id].CoolTimeIndex)
         {
             case eSkillID.Chain:
                 StartCoroutine(ChainFunction());
@@ -177,15 +182,15 @@ public class PlayerInfoController : DataLoader
     private IEnumerator CooltimeWorks(int id)
     {
         WaitForFixedUpdate fixedUpdate = new WaitForFixedUpdate();
-        mCooltimeArr[mInfos[id].CoolTimeIndex] = mInfos[id].CoolTime;
-        mSkillArr[id - 1].SetVisible(true);
-        while (mCooltimeArr[mInfos[id].CoolTimeIndex] > 0)
+        int CurrentIndex = mInfos[id].CoolTimeIndex;
+        mSkillArr[CurrentIndex].SetVisible(true);
+        while (mCooltimeArr[CurrentIndex] > 0)
         {
-            mCooltimeArr[mInfos[id].CoolTimeIndex] -= Time.fixedDeltaTime;
-            mSkillArr[id - 1].ShowCoolTime(mInfos[id].CoolTime, mCooltimeArr[mInfos[id].CoolTimeIndex]);
+            mCooltimeArr[CurrentIndex] -= Time.fixedDeltaTime;
+            mSkillArr[CurrentIndex].ShowCoolTime(mInfos[id].CoolTime, mCooltimeArr[CurrentIndex]);
             yield return fixedUpdate;
         }
-        mSkillArr[id - 1].SetVisible(false);
+        mSkillArr[CurrentIndex].SetVisible(false);
     }
 }
 [Serializable]
